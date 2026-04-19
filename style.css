@@ -39,13 +39,13 @@ body.experiment-body {
 }
 
 .pec-logo {
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
   border-radius: 12px;
   display: grid;
   place-items: center;
   color: #ffffff;
-  font-size: 30px;
+  font-size: 26px;
   font-weight: 800;
   letter-spacing: 0.04em;
   background: linear-gradient(135deg, var(--primary), var(--primary-2));
@@ -243,9 +243,9 @@ body.immersive-mode .pec-topbar {
   }
 
   .pec-logo {
-    width: 56px;
-    height: 56px;
-    font-size: 24px;
+    width: 50px;
+    height: 50px;
+    font-size: 21px;
   }
 
   .pec-subtitle {
