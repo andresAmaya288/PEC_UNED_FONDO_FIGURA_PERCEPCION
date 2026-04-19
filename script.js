@@ -541,6 +541,35 @@
     });
   }
 
+  function aggregateSummaryRows(rows) {
+    const result = {
+      natural: { bloque: "natural", asCount: 0, bsCount: 0, asPct: 0, bsPct: 0 },
+      invertido: { bloque: "invertido", asCount: 0, bsCount: 0, asPct: 0, bsPct: 0 }
+    };
+
+    rows.forEach((row) => {
+      const block = row.bloque;
+      if (block !== "natural" && block !== "invertido") {
+        return;
+      }
+      result[block].asCount += Number(row.asCount || 0);
+      result[block].bsCount += Number(row.bsCount || 0);
+    });
+
+    Object.values(result).forEach((row) => {
+      const total = row.asCount + row.bsCount;
+      if (total > 0) {
+        row.asPct = (row.asCount / total) * 100;
+        row.bsPct = (row.bsCount / total) * 100;
+      } else {
+        row.asPct = 0;
+        row.bsPct = 0;
+      }
+    });
+
+    return [result.natural, result.invertido];
+  }
+
   function renderResultsTables(summaryRows) {
     ui.freqTableBody.innerHTML = "";
     ui.pctTableBody.innerHTML = "";
@@ -771,27 +800,29 @@
   }
 
   async function processCsvUploads() {
-    const rawFile = ui.inputRawCsv.files[0];
-    const summaryFile = ui.inputSummaryCsv.files[0];
+    const rawFiles = Array.from(ui.inputRawCsv.files || []);
+    const summaryFiles = Array.from(ui.inputSummaryCsv.files || []);
 
-    if (!rawFile && !summaryFile) {
+    if (rawFiles.length === 0 && summaryFiles.length === 0) {
       alert("Selecciona al menos un CSV para procesar.");
       return;
     }
 
-    const [rawText, summaryText] = await Promise.all([readFileText(rawFile), readFileText(summaryFile)]);
+    const rawTexts = await Promise.all(rawFiles.map((file) => readFileText(file)));
+    const summaryTexts = await Promise.all(summaryFiles.map((file) => readFileText(file)));
 
     let loadedRecords = analysisState.records;
     let loadedSummary = analysisState.summaryRows;
 
-    if (rawText) {
-      loadedRecords = parseRawRecords(rawText);
+    if (rawTexts.length > 0) {
+      loadedRecords = rawTexts.flatMap((text) => parseRawRecords(text));
       loadedSummary = computeSummaryFromRecords(loadedRecords);
       updateHeaderProgress(loadedRecords.length);
     }
 
-    if (summaryText) {
-      loadedSummary = parseSummaryRows(summaryText);
+    if (summaryTexts.length > 0) {
+      const parsedSummaryRows = summaryTexts.flatMap((text) => parseSummaryRows(text));
+      loadedSummary = aggregateSummaryRows(parsedSummaryRows);
     }
 
     showAnalysis(loadedSummary, loadedRecords);
