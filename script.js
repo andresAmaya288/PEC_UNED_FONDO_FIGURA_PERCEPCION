@@ -74,6 +74,7 @@
     btnStartExperiment: document.getElementById("btn-start-experiment"),
     btnStartBlock: document.getElementById("btn-start-block"),
     btnContinue: document.getElementById("btn-continue"),
+    btnDownloadParticipantRaw: document.getElementById("btn-download-participant-raw"),
     btnDownloadParticipantReport: document.getElementById("btn-download-participant-report"),
     btnParticipantFinish: document.getElementById("btn-participant-finish"),
     btnRestart: document.getElementById("btn-restart"),
@@ -803,6 +804,25 @@
     ui.btnGoInstructions.addEventListener("click", () => showScreen("instructions"));
     ui.btnBackWelcome.addEventListener("click", () => showScreen("welcome"));
     ui.btnParticipantFinish.addEventListener("click", () => showScreen("welcome"));
+
+    ui.btnDownloadParticipantRaw.addEventListener("click", () => {
+      if (!experimentState || !experimentState.records.length) {
+        alert("No hay datos del participante para exportar.");
+        return;
+      }
+
+      const csv = convertToCsv(experimentState.records, [
+        "participante",
+        "edad",
+        "genero",
+        "bloque",
+        "ensayo",
+        "imagen",
+        "respuesta",
+        "clasificacion"
+      ]);
+      downloadCsv("datos_brutos_participante_figura_fondo.csv", csv);
+    });
 
     ui.btnDownloadParticipantReport.addEventListener("click", () => {
       if (!experimentState || !experimentState.records.length) {
