@@ -1,0 +1,105 @@
+:root {
+  --bg: #f6f8fb;
+  --surface: #ffffff;
+  --border: #e3e8ef;
+  --text: #1f2a37;
+  --muted: #5b6775;
+  --primary: #2f6fed;
+}
+
+body {
+  background: radial-gradient(circle at top left, #ffffff 0%, var(--bg) 55%);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.app-shell {
+  max-width: 900px;
+}
+
+.lab-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background-color: var(--surface);
+}
+
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+}
+
+.instruction-list {
+  max-width: 720px;
+  margin: 0 auto 1.2rem;
+  color: var(--text);
+}
+
+.trial-stage {
+  overflow: hidden;
+}
+
+.trial-canvas {
+  position: relative;
+  height: min(62vh, 520px);
+  display: grid;
+  place-items: center;
+  background: #f9fafc;
+}
+
+#fixation {
+  font-size: 64px;
+  font-weight: 700;
+  color: #2f3742;
+  line-height: 1;
+}
+
+.stimulus {
+  max-width: min(88vw, 640px);
+  max-height: min(55vh, 420px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border: 1px solid #dbe2ea;
+  background: #ffffff;
+}
+
+.mask {
+  width: min(88vw, 640px);
+  height: min(55vh, 420px);
+  border: 1px solid #dbe2ea;
+  background: repeating-linear-gradient(
+    45deg,
+    #b9c3cf,
+    #b9c3cf 8px,
+    #c8d0da 8px,
+    #c8d0da 16px
+  );
+}
+
+.hidden {
+  display: none !important;
+}
+
+.response-btn {
+  min-width: 170px;
+}
+
+.chart-wrap {
+  position: relative;
+  width: 100%;
+  min-height: 320px;
+}
+
+@media (max-width: 576px) {
+  #fixation {
+    font-size: 52px;
+  }
+
+  .stimulus,
+  .mask {
+    max-height: 46vh;
+  }
+}
