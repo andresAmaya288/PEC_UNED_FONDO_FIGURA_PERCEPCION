@@ -12,6 +12,7 @@
   const FIXATION_MAX_MS = 1000;
   const MASK_MIN_MS = 500;
   const MASK_MAX_MS = 1000;
+  const BREAK_DURATION_SECONDS = 120;
 
   const CONFIG = {
     // Valores validos en URL: ?block1=natural o ?block1=invertido
@@ -86,6 +87,7 @@
     participantGender: document.getElementById("participant-gender"),
     participantSessionMeta: document.getElementById("participant-session-meta"),
     analysisParticipantMeta: document.getElementById("analysis-participant-meta"),
+    breakTimer: document.getElementById("break-timer"),
     blockTitle: document.getElementById("block-title"),
     blockDescription: document.getElementById("block-description"),
     fixation: document.getElementById("fixation"),
@@ -102,7 +104,7 @@
   let experimentState;
   let analysisState = { records: [], summaryRows: [] };
   let chartInstance = null;
-  const processedStimulusCache = new Map();
+  let breakTimerInterval = null;
 
   function resolveFirstBlock() {
     const requested = (CONFIG.forcedFirstBlock || "").toLowerCase();
@@ -191,83 +193,32 @@
     });
   }
 
-  function createCleanBinaryStimulus(img) {
-    const width = img.naturalWidth || img.width;
-    const height = img.naturalHeight || img.height;
-    const canvas = document.createElement("canvas");
-    canvas.width = width;
-    canvas.height = height;
-
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
-    ctx.drawImage(img, 0, 0, width, height);
-
-    const srcData = ctx.getImageData(0, 0, width, height);
-    const data = srcData.data;
-    const binary = new Uint8Array(width * height);
-
-    for (let i = 0, p = 0; i < data.length; i += 4, p += 1) {
-      const lum = data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114;
-      binary[p] = lum >= 128 ? 255 : 0;
-    }
-
-    const cleaned = new Uint8Array(binary.length);
-
-    // Limpieza local rapida: reduce ruido sin bloquear el flujo del ensayo.
-    for (let y = 0; y < height; y += 1) {
-      for (let x = 0; x < width; x += 1) {
-        const idx = y * width + x;
-
-        if (x === 0 || y === 0 || x === width - 1 || y === height - 1) {
-          cleaned[idx] = binary[idx];
-          continue;
-        }
-
-        let whiteNeighbors = 0;
-        for (let oy = -1; oy <= 1; oy += 1) {
-          for (let ox = -1; ox <= 1; ox += 1) {
-            if (ox === 0 && oy === 0) continue;
-            const nIdx = (y + oy) * width + (x + ox);
-            if (binary[nIdx] === 255) whiteNeighbors += 1;
-          }
-        }
-
-        if (binary[idx] === 0) {
-          // Si el pixel negro esta rodeado de blanco, se corrige a blanco.
-          cleaned[idx] = whiteNeighbors >= 6 ? 255 : 0;
-        } else {
-          // Conserva blanco salvo ruido blanco muy aislado.
-          cleaned[idx] = whiteNeighbors <= 1 ? 0 : 255;
-        }
-      }
-    }
-
-    for (let i = 0, p = 0; p < cleaned.length; i += 4, p += 1) {
-      const value = cleaned[p];
-      data[i] = value;
-      data[i + 1] = value;
-      data[i + 2] = value;
-      data[i + 3] = 255;
-    }
-
-    ctx.putImageData(srcData, 0, 0);
-    return canvas.toDataURL("image/png");
+  function formatBreakTime(seconds) {
+    const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
+    const ss = String(seconds % 60).padStart(2, "0");
+    return `${mm}:${ss}`;
   }
 
-  async function getProcessedStimulusSrc(imageCode) {
-    if (processedStimulusCache.has(imageCode)) {
-      return processedStimulusCache.get(imageCode);
+  function startBreakTimer() {
+    if (breakTimerInterval) {
+      clearInterval(breakTimerInterval);
+      breakTimerInterval = null;
     }
 
-    const path = getStimulusPath(imageCode);
-    try {
-      const img = await loadImage(path);
-      const processedSrc = createCleanBinaryStimulus(img);
-      processedStimulusCache.set(imageCode, processedSrc);
-      return processedSrc;
-    } catch {
-      processedStimulusCache.set(imageCode, path);
-      return path;
-    }
+    let remaining = BREAK_DURATION_SECONDS;
+    ui.btnContinue.disabled = true;
+    ui.breakTimer.textContent = formatBreakTime(remaining);
+
+    breakTimerInterval = setInterval(() => {
+      remaining -= 1;
+      ui.breakTimer.textContent = formatBreakTime(Math.max(remaining, 0));
+
+      if (remaining <= 0) {
+        clearInterval(breakTimerInterval);
+        breakTimerInterval = null;
+        ui.btnContinue.disabled = false;
+      }
+    }, 1000);
   }
 
   function getAsBsLabel(imageCode, response) {
@@ -315,7 +266,13 @@
 
     ui.fixation.classList.add("hidden");
 
-    const stimulusSrc = await getProcessedStimulusSrc(trialObject.imageCode);
+    const stimulusSrc = getStimulusPath(trialObject.imageCode);
+    try {
+      await loadImage(stimulusSrc);
+    } catch {
+      // Si falla la precarga, se intenta mostrar la ruta igualmente.
+    }
+
     ui.stimulusImage.src = stimulusSrc;
     ui.stimulusImage.classList.remove("hidden");
     await wait(STIMULUS_DURATION_MS);
@@ -718,6 +675,7 @@
       experimentState.currentBlockIndex = 1;
       experimentState.currentTrialIndex = 0;
       showScreen("breakScreen");
+      startBreakTimer();
       return;
     }
 
@@ -832,6 +790,11 @@
     });
 
     ui.btnRestart.addEventListener("click", () => {
+      if (breakTimerInterval) {
+        clearInterval(breakTimerInterval);
+        breakTimerInterval = null;
+      }
+
       if (chartInstance) {
         chartInstance.destroy();
         chartInstance = null;
@@ -860,6 +823,8 @@
     bindEvents();
     initExperimentState();
     experimentState.participant = { nombre: "", edad: "", genero: "" };
+    ui.breakTimer.textContent = formatBreakTime(BREAK_DURATION_SECONDS);
+    ui.btnContinue.disabled = true;
     showScreen("welcome");
   }
 

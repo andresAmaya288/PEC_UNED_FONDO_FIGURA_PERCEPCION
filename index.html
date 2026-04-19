@@ -37,24 +37,7 @@
             <h2 class="h4 mb-3 text-center">Instrucciones</h2>
             <div class="rubin-demo mb-4">
               <div class="rubin-demo__title">Demo: Copa de Rubin</div>
-              <svg viewBox="0 0 320 190" aria-label="Demo copa de Rubin" role="img" class="rubin-svg">
-                <rect x="0" y="0" width="320" height="190" fill="#dcdcdc"></rect>
-                <path
-                  d="M48 10 L272 10 C268 16,258 22,248 27 C241 31,239 37,236 43 C232 52,226 58,218 63 C210 68,208 75,208 83 C208 90,203 95,196 99 C188 103,185 109,186 116 C186 123,191 128,198 132 C205 136,207 143,204 149 C200 157,202 164,211 176 L109 176 C118 164,120 157,116 149 C113 143,115 136,122 132 C129 128,134 123,134 116 C135 109,132 103,124 99 C117 95,112 90,112 83 C112 75,110 68,102 63 C94 58,88 52,84 43 C81 37,79 31,72 27 C62 22,52 16,48 10 Z"
-                  fill="#000000"
-                ></path>
-                <path
-                  d="M145 75 C152 71,153 63,147 58 C154 55,159 49,160 43 C161 49,166 55,173 58 C167 63,168 71,175 75 C168 79,167 87,173 92 C166 95,161 101,160 107 C159 101,154 95,147 92 C153 87,152 79,145 75 Z"
-                  fill="#dcdcdc"
-                ></path>
-                <path
-                  d="M151 112 C157 108,157 101,151 97 C157 93,157 86,151 82 C157 78,157 71,151 67 M169 112 C163 108,163 101,169 97 C163 93,163 86,169 82 C163 78,163 71,169 67"
-                  fill="none"
-                  stroke="#dcdcdc"
-                  stroke-width="5"
-                  stroke-linecap="round"
-                ></path>
-              </svg>
+              <img src="assets/rubin/rubin.jpg" alt="Demo copa de Rubin" class="rubin-svg" />
               <p class="small text-secondary mb-0">
                 Esta figura reversible muestra cómo puede cambiar qué región se percibe delante.
               </p>
@@ -161,8 +144,9 @@
           <div class="card-body p-4 p-md-5 text-center">
             <h2 class="h4 mb-3">Descanso</h2>
             <p class="text-secondary mb-4">
-              Has completado el primer bloque. Pulsa para continuar con el segundo.
+              Has completado el primer bloque. Espera a que finalice el temporizador para continuar.
             </p>
+            <p id="break-timer" class="h3 mb-4">02:00</p>
             <button id="btn-continue" class="btn btn-primary px-4">
               Continuar
             </button>
