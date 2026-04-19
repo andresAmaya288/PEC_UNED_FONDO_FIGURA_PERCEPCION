@@ -81,31 +81,33 @@ Sobre esta base teórica, el presente estudio plantea una reproducción simplifi
 
 \subsection{Participantes}
 
-Participaron 3 personas (\(N=3\)) reclutadas por conveniencia. Para preservar el anonimato, se codificaron como P1, P2 y P3. Sus edades fueron 58, 51 y 29 años, respectivamente (media = 46.00 años). En cuanto al sexo, participaron 2 hombres y 1 mujer. Todos completaron las dos sesiones experimentales previstas.
+La muestra final estuvo compuesta por cinco participantes adultos (\(N=5\)), reclutados por conveniencia, en línea con el planteamiento docente de la práctica. Para preservar la confidencialidad, los datos se trataron mediante codificación anónima (P1-P5) durante el análisis. La edad osciló entre 21 y 51 años (\(M = 28.60\), \(DT = 12.60\)); la distribución por género fue de cuatro mujeres y un hombre. Todos los participantes completaron el protocolo experimental íntegro (48 ensayos por participante), sin pérdidas de datos.
 
 \subsection{Materiales}
 
-La tarea se administró en formato online mediante una aplicación web interactiva \cite{amaya2026web}, cuyo desarrollo completo está disponible en el repositorio del proyecto \cite{amaya2026repo}. 
+La tarea se administró mediante una aplicación web desarrollada ad hoc para la PEC de figura-fondo \cite{amaya2026web}, con código fuente y trazabilidad de implementación disponibles en el repositorio del proyecto \cite{amaya2026repo}. 
 
-Los estímulos consistieron en una estrella presentada con 7 niveles de inclinación (0º, 1º, 2º, 3º, 4º, 5º y 6º), seguida de una máscara visual. La respuesta se registró en formato dicotómico: \emph{``Sí, está inclinada''} / \emph{``No, no está inclinada''}. Para las representaciones gráficas se utilizó  \cite{chartjs}.
+Se utilizaron 24 estímulos bícromos (blanco/negro) con borde común, extraídos del conjunto de láminas de la práctica: 12 estímulos en orientación natural o canónica (N1-N12) y 12 en orientación invertida (I1-I12). En cada estímulo, una región correspondía a alta significación (AS; contorno compatible con objeto familiar) y la región complementaria a baja significación (BS), de acuerdo con la tabla oficial de codificación del enunciado. La respuesta del participante fue dicotómica y forzada (``BLANCO'' o ``NEGRO''). Para la representación gráfica y el módulo de análisis se empleó Chart.js \cite{chartjs}.
 
 \subsection{Diseño}
 
-Se utilizó un diseño intrasujeto basado en el método de los estímulos constantes. La variable independiente fue la inclinación del estímulo (7 niveles: 0º--6º). La variable dependiente fue la respuesta perceptiva (\emph{sí/no}) y, de forma derivada, el porcentaje de respuestas afirmativas por nivel de inclinación.
+Se aplicó un diseño factorial intrasujeto \(2 \times 2\), coherente con la lógica experimental del enunciado: (a) significación de la región (AS frente a BS) y (b) tipo de presentación (natural/canónica frente a invertida). La significación no se manipuló como respuesta explícita, sino que se derivó de la recodificación de la respuesta cromática (blanco/negro) según la clave AS/BS predefinida para cada estímulo.
 
-Cada participante realizó 2 sesiones de 42 ensayos (84 ensayos en total), con 6 repeticiones por inclinación en cada sesión (12 repeticiones totales por inclinación). El orden de presentación de los niveles se aleatorizó por sesión.
+La variable dependiente principal fue la proporción de elecciones de la región AS como figura. Cada participante realizó 48 ensayos, distribuidos en dos bloques de 24 ensayos (natural e invertido). En cada bloque, los 12 estímulos correspondientes se presentaron exactamente dos veces (12 \(\times\) 2 = 24), con orden aleatorizado intra-bloque. Según los cinco archivos CSV analizados, tres participantes iniciaron con el bloque natural y dos con el bloque invertido.
 
 \subsection{Procedimiento}
 
-La participación se realizó online. Antes de iniciar la tarea, cada participante introdujo sus datos básicos (nombre, edad y sexo). En cada ensayo se presentó: (1) un punto de fijación (2 s), (2) el estímulo (1 s), (3) una máscara visual (1 s) y (4) la pantalla de respuesta sin límite temporal.
+El procedimiento siguió el marco del enunciado de la PEC, adaptado a formato web. Tras la introducción de datos sociodemográficos básicos, el participante recibía instrucciones estandarizadas y un ejemplo de figura reversible (tipo Rubin) para fijar el criterio perceptivo de ``figura'' como región percibida en primer plano.
 
-Tras finalizar la primera sesión, se incluyó un descanso antes de la segunda. Al concluir la tarea, se generó una hoja de recogida de datos por participante para su posterior análisis.
+Cada ensayo siguió la secuencia temporal: (1) punto de fijación central con duración aleatoria entre 500 y 1000 ms, (2) presentación del estímulo durante 100 ms, (3) máscara visual de ruido acromático con duración aleatoria entre 500 y 1000 ms y (4) pantalla de respuesta forzada (BLANCO/NEGRO), sin posibilidad de corrección posterior. 
+
+Tras completar el primer bloque, se introdujo un descanso temporizado de 120 s y, a continuación, se administró el segundo bloque en la orientación complementaria. La aleatorización de ensayos se generó de forma independiente para cada participante y para cada bloque, manteniendo la restricción de dos apariciones por estímulo.
 
 \subsection{Análisis de datos}
 
-Para cada participante y cada inclinación se calculó la frecuencia absoluta de respuestas afirmativas (\emph{fa}) y el porcentaje de respuestas \emph{``sí''}. El umbral absoluto se estimó como la inclinación con porcentaje más cercano al 50\%.
+El análisis se realizó sobre los cinco archivos CSV de datos brutos (240 observaciones en total: 5 participantes \(\times\) 48 ensayos). Previamente se aplicaron controles de integridad: ausencia de valores perdidos, 48 ensayos por participante, 24 ensayos por bloque y dos presentaciones de cada estímulo dentro de su bloque. Todos los criterios se cumplieron.
 
-Para describir la tendencia grupal, también se calcularon intervalos de confianza del 95\% de los porcentajes medios por inclinación mediante aproximación normal. Este tratamiento se utilizó con fines descriptivos; no se realizaron contrastes confirmatorios debido al tamaño muestral reducido y a la naturaleza acotada de la variable porcentaje.
+Para cada participante y para cada bloque se calcularon frecuencias absolutas y porcentajes de respuestas AS y BS. A nivel agregado se estimaron proporciones por condición de orientación. En concordancia con los objetivos inferenciales de la práctica, se incluyeron contrastes frente al azar (\(p=0.50\)) mediante prueba binomial exacta bilateral por bloque y global; comparación entre bloques natural e invertido mediante prueba \(z\) de diferencia de proporciones; y prueba de independencia \(\chi^2\) para la tabla bloque \(\times\) clasificación, junto con \(\phi\) como índice de tamaño de efecto. El umbral de decisión estadística se fijó en \(\alpha = .05\) (bilateral).
 
 \section{Resultados}
 
