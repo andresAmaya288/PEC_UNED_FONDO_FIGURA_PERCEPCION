@@ -160,6 +160,9 @@
   function showScreen(screenKey) {
     Object.values(screens).forEach((screen) => screen.classList.remove("active"));
     screens[screenKey].classList.add("active");
+
+    const immersiveScreens = new Set(["trial", "response"]);
+    document.body.classList.toggle("immersive-mode", immersiveScreens.has(screenKey));
   }
 
   function hideStimulusElements() {

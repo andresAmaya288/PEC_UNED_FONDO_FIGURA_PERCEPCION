@@ -25,6 +25,54 @@ body.experiment-body {
   max-width: 940px;
 }
 
+.pec-topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.pec-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.pec-logo {
+  width: 76px;
+  height: 76px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  box-shadow: 0 10px 24px rgba(23, 101, 217, 0.2);
+}
+
+.pec-title {
+  margin: 0;
+  font-size: clamp(1.2rem, 2.6vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.pec-subtitle {
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.pec-meta {
+  display: flex;
+  gap: 14px;
+  color: var(--muted);
+  font-size: 1.4rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
 .lab-card {
   border: 1px solid var(--border);
   border-radius: 14px;
@@ -38,6 +86,10 @@ body.experiment-body {
 
 .screen.active {
   display: block;
+}
+
+body.immersive-mode .pec-topbar {
+  display: none;
 }
 
 .instruction-list {
@@ -153,6 +205,25 @@ body.experiment-body {
 }
 
 @media (max-width: 576px) {
+  .pec-topbar {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .pec-logo {
+    width: 60px;
+    height: 60px;
+    font-size: 28px;
+  }
+
+  .pec-subtitle {
+    font-size: 0.92rem;
+  }
+
+  .pec-meta {
+    font-size: 1.05rem;
+  }
+
   #fixation {
     font-size: 52px;
   }
