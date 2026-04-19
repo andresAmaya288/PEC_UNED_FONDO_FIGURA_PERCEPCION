@@ -1,0 +1,235 @@
+% ======================================================================
+% PLANTILLA APA7 PROFESIONAL – INFORME PEC
+% Basada en la plantilla original proporcionada por el usuario
+% Adaptada para un informe limpio, ordenado y estético
+% ======================================================================
+
+\documentclass[stu, 12pt, letterpaper, donotrepeattitle, floatsintext, natbib]{apa7}
+
+% ------------------------
+% PAQUETES
+% ------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{csquotes}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{array}
+\usepackage[authoryear]{natbib}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{threeparttable}
+\usepackage{multirow}
+\usepackage[table]{xcolor}
+\usepackage{fancyvrb}
+
+
+
+% Mejor apariencia de tablas y figuras
+\captionsetup{font=small, labelfont=bf}
+\setlength{\parskip}{0.2em}
+\setlength{\parindent}{0pt}
+
+% Portada
+\title{\Large Evaluación de la inclinación visual mediante el método de estímulos constantes}
+\author{Andrés Amaya Zamudio}
+\affiliation{UNED Centro Asociado de Móstoles}
+\course{Prueba de Evaluación Continua 1}
+\professor{Psicología de la Percepción}
+\duedate{24 de Abril de 2026}
+
+\begin{document}
+\maketitle
+
+% ---------------------------------------------
+% CUERPO PRINCIPAL DEL INFORME
+% ---------------------------------------------
+\pagenumbering{arabic}
+
+% ============================================
+\section*{Resumen}
+\addcontentsline{toc}{section}{Resumen}
+Este estudio evaluó la sensibilidad perceptiva a la inclinación visual mediante el método de los estímulos constantes en formato online. Participaron tres personas (P1, P2 y P3), que completaron dos sesiones de 42 ensayos (84 ensayos por participante; 252 ensayos en total). En cada ensayo se presentó una estrella con inclinación entre 0º y 6º, seguida de una máscara visual, y se registró una respuesta dicotómica (\emph{sí/no}).
+
+El análisis se planteó de forma descriptiva: frecuencias absolutas, porcentajes de respuestas afirmativas por inclinación e intervalos de confianza del 95\% sobre las medias grupales. Los resultados mostraron un patrón psicométrico monotónico: porcentajes bajos de respuestas \emph{sí} en 0º-2º y aumento pronunciado desde 3º, con efecto techo en 5º-6º. Los umbrales absolutos individuales, definidos como la inclinación con porcentaje más cercano al 50\%, fueron 2º (P1), 3º (P2) y 3º (P3), con promedio de 2.67º.
+
+En conjunto, los datos son compatibles con una concepción probabilística de la detección perceptiva y sitúan la zona de transición alrededor de 3º. Sin embargo, el alcance de las conclusiones es limitado por el tamaño muestral, el formato online y la estimación discreta del umbral.
+
+% ============================================
+%\citet{green1966signal}   % Green y Swets (1966)
+%\citep{green1966signal}   % (Green y Swets, 1966)
+
+\section{Introducción}
+
+La organización figura-fondo es un proceso central de la percepción visual: para reconocer objetos en escenas complejas, el sistema visual debe segmentar el campo en regiones y asignar cuál aparece como figura (delante, delimitada por contornos) y cuál como fondo \citep{goldstein2025percepcion,rubin1915}. Este problema se estudió de forma clásica en la tradición Gestalt y sigue siendo una cuestión teórica relevante porque conecta mecanismos perceptivos tempranos con procesos de reconocimiento de objetos.
+
+En el marco clásico, se asumió durante décadas una secuencia estricta: primero se resolvería la segregación figura-fondo y, solo después, podría comenzar el reconocimiento del objeto. Desde esa perspectiva, la asignación figura-fondo estaría guiada principalmente por claves de estímulo (bottom-up), y la experiencia previa tendría un papel limitado en etapas iniciales \citep{rock1983logic}. Sin embargo, la evidencia empírica fue abriendo un debate sobre si esa secuencia es realmente unidireccional.
+
+Un punto de inflexión fue el trabajo de \citet{peterson1994must}, que mostró que el reconocimiento dependiente de orientación puede influir en la asignación figura-fondo incluso con exposiciones muy breves y enmascaradas. En sus resultados, la región con mayor significación (contorno interpretable como objeto conocido) tendía a ser seleccionada como figura más veces que la región de baja significación, especialmente cuando el estímulo se presentaba en orientación canónica. Este patrón cuestiona la idea de una arquitectura estrictamente serial y sugiere interacciones tempranas entre segmentación y reconocimiento \citep{peterson1994object}.
+
+Desde un enfoque interactivo, la evidencia posterior ha defendido que la organización figura-fondo y el reconocimiento de objetos se influyen mutuamente, combinando señales bottom-up y top-down en ventanas temporales tempranas \citep{vecera1998interactive}. En este contexto, manipular la orientación del estímulo es metodológicamente clave: la inversión suele dificultar el reconocimiento rápido de objetos familiares, por lo que permite evaluar si el sesgo hacia regiones de alta significación depende de la accesibilidad del reconocimiento \citep{tarr1989mental}.
+
+El presente informe se sitúa en ese debate teórico y reproduce una versión simplificada del paradigma de figura-fondo del enunciado de la prueba de evaluación continua.
+
+\subsection*{Objetivos}
+
+El objetivo general es analizar si el reconocimiento de objetos modula la organización figura-fondo.
+
+Objetivos específicos:
+\begin{enumerate}
+	\item Comprobar si la región de alta significación (AS) es elegida como figura con mayor frecuencia que la de baja significación (BS).
+	\item Evaluar si ese posible sesgo AS sobre BS depende de la orientación de presentación (natural/canónica frente a invertida).
+	\item Contrastar si, en la condición invertida, el porcentaje de elecciones AS se aproxima al azar, mientras que en la condición natural aumenta por encima de ese nivel.
+\end{enumerate}
+
+En términos de hipótesis, se espera una ventaja de AS en orientación natural y una reducción de esa ventaja en orientación invertida, patrón compatible con una contribución temprana de procesos de reconocimiento al establecimiento de relaciones figura-fondo.
+
+
+% ---------------------------------------------
+\section{Método}
+
+\subsection{Participantes}
+
+Participaron 3 personas (\(N=3\)) reclutadas por conveniencia. Para preservar el anonimato, se codificaron como P1, P2 y P3. Sus edades fueron 58, 51 y 29 años, respectivamente (media = 46.00 años). En cuanto al sexo, participaron 2 hombres y 1 mujer. Todos completaron las dos sesiones experimentales previstas.
+
+\subsection{Materiales}
+
+La tarea se administró en formato online mediante una aplicación web interactiva \cite{amaya2026web}, cuyo desarrollo completo está disponible en el repositorio del proyecto \cite{amaya2026repo}. 
+
+Los estímulos consistieron en una estrella presentada con 7 niveles de inclinación (0º, 1º, 2º, 3º, 4º, 5º y 6º), seguida de una máscara visual. La respuesta se registró en formato dicotómico: \emph{``Sí, está inclinada''} / \emph{``No, no está inclinada''}. Para las representaciones gráficas se utilizó  \cite{chartjs}.
+
+\subsection{Diseño}
+
+Se utilizó un diseño intrasujeto basado en el método de los estímulos constantes. La variable independiente fue la inclinación del estímulo (7 niveles: 0º--6º). La variable dependiente fue la respuesta perceptiva (\emph{sí/no}) y, de forma derivada, el porcentaje de respuestas afirmativas por nivel de inclinación.
+
+Cada participante realizó 2 sesiones de 42 ensayos (84 ensayos en total), con 6 repeticiones por inclinación en cada sesión (12 repeticiones totales por inclinación). El orden de presentación de los niveles se aleatorizó por sesión.
+
+\subsection{Procedimiento}
+
+La participación se realizó online. Antes de iniciar la tarea, cada participante introdujo sus datos básicos (nombre, edad y sexo). En cada ensayo se presentó: (1) un punto de fijación (2 s), (2) el estímulo (1 s), (3) una máscara visual (1 s) y (4) la pantalla de respuesta sin límite temporal.
+
+Tras finalizar la primera sesión, se incluyó un descanso antes de la segunda. Al concluir la tarea, se generó una hoja de recogida de datos por participante para su posterior análisis.
+
+\subsection{Análisis de datos}
+
+Para cada participante y cada inclinación se calculó la frecuencia absoluta de respuestas afirmativas (\emph{fa}) y el porcentaje de respuestas \emph{``sí''}. El umbral absoluto se estimó como la inclinación con porcentaje más cercano al 50\%.
+
+Para describir la tendencia grupal, también se calcularon intervalos de confianza del 95\% de los porcentajes medios por inclinación mediante aproximación normal. Este tratamiento se utilizó con fines descriptivos; no se realizaron contrastes confirmatorios debido al tamaño muestral reducido y a la naturaleza acotada de la variable porcentaje.
+
+\section{Resultados}
+
+\subsection{Hojas de recogida de datos de cada participante}
+
+Las hojas de recogida de datos de cada participante se generaron automáticamente durante la tarea y se utilizaron para el análisis presentado en este informe. Los datos brutos pueden consultarse en el repositorio del proyecto \citep{amaya2026repo}. En los tres casos se registraron 84 ensayos completos, sin valores perdidos, y 12 observaciones por nivel de inclinación.
+
+\subsection{Tabla de resultados}
+
+La Tabla~\ref{tab:resultados_estructura_anexo_apa} presenta los resultados individuales (\emph{fa} y \%) y el umbral absoluto de cada participante. Los umbrales fueron 2º (P1), 3º (P2) y 3º (P3), con un promedio de 2.67º.
+
+\begin{table}[H]
+\centering
+\caption{Frecuencia absoluta (\emph{fa}), porcentaje de respuestas afirmativas y umbral absoluto por participante}
+\label{tab:resultados_estructura_anexo_apa}
+\begin{threeparttable}
+\renewcommand{\arraystretch}{1.15}
+\setlength{\tabcolsep}{4.2pt}
+
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccccccccccccc}
+\toprule
+\multirow{3}{*}{\textbf{Participante}} &
+\multicolumn{14}{c}{\textbf{Intensidad del estímulo (inclinación medida en grados)}} &
+\multirow{3}{*}{\textbf{Umbral absoluto}} \\
+\cmidrule(lr){2-15}
+& \multicolumn{2}{c}{\textbf{0º}}
+& \multicolumn{2}{c}{\textbf{+1º}}
+& \multicolumn{2}{c}{\textbf{+2º}}
+& \multicolumn{2}{c}{\textbf{+3º}}
+& \multicolumn{2}{c}{\textbf{+4º}}
+& \multicolumn{2}{c}{\textbf{+5º}}
+& \multicolumn{2}{c}{\textbf{+6º}} & \\
+\cmidrule(lr){2-15}
+& \textbf{fa} & \textbf{\%}
+& \textbf{fa} & \textbf{\%}
+& \textbf{fa} & \textbf{\%}
+& \textbf{fa} & \textbf{\%}
+& \textbf{fa} & \textbf{\%}
+& \textbf{fa} & \textbf{\%}
+& \textbf{fa} & \textbf{\%}
+& \\
+\midrule
+P1 & 0 & 0,00 & 0 & 0,00 & 2 & 16,67 & 11 & 91,67 & 12 & 100,00 & 12 & 100,00 & 12 & 100,00 & 2º \\
+P2 & 1 & 8,33 & 0 & 0,00 & 0 & 0,00 & 5 & 41,67 & 11 & 91,67 & 12 & 100,00 & 12 & 100,00 & 3º \\
+P3 & 0 & 0,00 & 3 & 25,00 & 1 & 8,33 & 7 & 58,33 & 11 & 91,67 & 12 & 100,00 & 12 & 100,00 & 3º \\
+\midrule
+\textbf{Promedio (\%)} & \multicolumn{2}{c}{\textbf{2,78}} & \multicolumn{2}{c}{\textbf{8,33}} &
+\multicolumn{2}{c}{\textbf{8,33}} & \multicolumn{2}{c}{\textbf{63,89}} &
+\multicolumn{2}{c}{\textbf{94,45}} & \multicolumn{2}{c}{\textbf{100,00}} &
+\multicolumn{2}{c}{\textbf{100,00}} & \textbf{2,67º} \\
+\bottomrule
+\end{tabular}%
+}
+
+\begin{tablenotes}
+\footnotesize
+\item \textit{Nota}. \emph{fa} = frecuencia absoluta de respuestas afirmativas sobre 12 ensayos por inclinación.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\subsection{Representaciones gráficas}
+
+Las representaciones gráficas individuales (Figuras~\ref{fig:curva_p1}, \ref{fig:curva_p2} y \ref{fig:curva_p3}) muestran un patrón psicométrico coherente: baja tasa de respuestas afirmativas en inclinaciones pequeñas y aumento pronunciado a partir de 3º--4º.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\linewidth]{results/grafica_1_alonso(1).png}
+\caption{\textit{Curva psicométrica de P1.}}
+\label{fig:curva_p1}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\linewidth]{results/grafica_2_isabel(1).png}
+\caption{\textit{Curva psicométrica de P2.}}
+\label{fig:curva_p2}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\linewidth]{results/grafica_3_sergio(1).png}
+\caption{\textit{Curva psicométrica de P3.}}
+\label{fig:curva_p3}
+\end{figure}
+
+\subsection{Intervalos de confianza descriptivos}
+
+En términos descriptivos, el porcentaje medio de respuestas \emph{``sí''} aumentó conforme creció la inclinación del estímulo: 2.78\% en 0º, 8.33\% en 1º, 8.33\% en 2º, 63.89\% en 3º, 94.45\% en 4º y 100\% en 5º y 6º. Los intervalos de confianza del 95\% (aproximación normal entre participantes, \(N=3\)) fueron: 0º [−2.67, 8.22], 1º [−8.00, 24.67], 2º [−1.10, 17.77], 3º [35.08, 92.70], 4º [89.00, 99.89], 5º [100, 100] y 6º [100, 100]. Como en otros análisis con aproximación normal sobre porcentajes, algunos límites inferiores quedaron fuera del rango [0, 100].
+
+La amplitud de los intervalos en 1º-3º refleja una incertidumbre relevante en la zona de transición, mientras que el estrechamiento en 4º-6º indica una convergencia hacia el techo de rendimiento.
+
+% ---------------------------------------------
+\section{Discusión y conclusiones}
+
+Los resultados son coherentes con el marco teórico de la introducción: la detección de inclinación no se comporta como un fenómeno todo-o-nada, sino como una transición probabilística conforme aumenta la magnitud física del estímulo. El incremento de respuestas afirmativas desde valores muy bajos en 0º-2º hasta valores próximos al techo en 5º-6º es compatible con una función psicométrica creciente \citep{fechner1966elements,green1966signal}.
+
+En términos de sensibilidad perceptiva, la zona crítica se sitúa alrededor de 3º. P1 mostró umbral en 2º, mientras que P2 y P3 lo hicieron en 3º, lo que sugiere diferencias individuales moderadas dentro de un patrón global común. Esta variabilidad puede reflejar diferencias en sensibilidad, en criterio de respuesta o en estabilidad atencional durante la tarea.
+
+La evolución por grados confirma que, a mayor inclinación, mayor probabilidad de detección. En 0º-2º predominan respuestas negativas; en 3º aparece la transición; y en 4º-6º se alcanza un rendimiento muy alto. Los intervalos de confianza apoyan esta lectura, aunque su amplitud en la zona intermedia indica incertidumbre relevante donde se localiza el umbral.
+
+Las limitaciones del procedimiento deben considerarse explícitamente. Primero, el tamaño muestral reducido limita la generalización. Segundo, aunque la tarea se implementó en una web programada específicamente para esta práctica, el contexto online no garantiza un control idéntico de todas las condiciones de presentación y visionado (dispositivo, distancia, brillo, posibles distracciones). Tercero, el número de niveles y repeticiones, aunque suficiente para observar tendencia, restringe la precisión fina de la estimación del umbral.
+
+Como conclusión, los datos respaldan que la detección de la inclinación aumenta de forma progresiva con el grado del estímulo y sitúan el umbral absoluto del grupo alrededor de 3º. Este resultado es coherente con el enfoque psicofísico de estímulos constantes y con la idea de que la percepción opera de forma probabilística, no dicotómica. Para mejorar la robustez de futuras aplicaciones, se recomienda ampliar la muestra, aumentar la densidad de niveles en la zona de transición (2º-4º), estandarizar con mayor detalle las condiciones de aplicación online (distancia orientativa, brillo y control de distracciones) y complementar el análisis descriptivo con ajustes formales de función psicométrica y estimaciones de intervalo específicas para proporciones 
+\citep{wichmann2001psychometric}.
+
+% ---------------------------------------------
+
+\addcontentsline{toc}{section}{Referencias}
+\bibliography{mibiliografia}
+% ---------------------------------------------
+
+\end{document}
