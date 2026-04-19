@@ -164,37 +164,23 @@ P5 & 83.33\% & 16.67\% & 70.83\% & 29.17\% \\
 
 \subsection{Resultados descriptivos por bloque}
 
-Las frecuencias agregadas por bloque se presentan en la Tabla~\ref{tab:freq_as_bs}. En ambos bloques predominó la elección de la región de alta significación (AS) sobre la de baja significación (BS).
+La Tabla~\ref{tab:desc_bloques} integra, en un único formato, las frecuencias absolutas y los porcentajes de respuestas AS y BS para cada bloque experimental. En ambos bloques predominó la elección de la región de alta significación (AS), con una ventaja descriptiva moderada frente a la región de baja significación (BS).
 
 \begin{table}[H]
 \centering
-\caption{Frecuencia de respuestas AS y BS por bloque}
-\label{tab:freq_as_bs}
-\begin{tabular}{lcc}
+\caption{Frecuencia y porcentaje de respuestas AS y BS por bloque}
+\label{tab:desc_bloques}
+\begin{tabular}{lcccc}
 \toprule
-\textbf{Bloque} & \textbf{AS} & \textbf{BS} \\
+\textbf{Bloque} & \textbf{AS (n)} & \textbf{AS (\%)} & \textbf{BS (n)} & \textbf{BS (\%)} \\
 \midrule
-Natural   & 82 & 38 \\
-Invertido & 87 & 33 \\
+Natural   & 82 & 68.33\% & 38 & 31.67\% \\
+Invertido & 87 & 72.50\% & 33 & 27.50\% \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-La Tabla~\ref{tab:pct_as_bs} muestra la distribución porcentual: el bloque natural registró 68.33\% de respuestas AS y el bloque invertido 72.50\%. La diferencia descriptiva entre bloques fue de 4.17 puntos porcentuales a favor del bloque invertido.
-
-\begin{table}[H]
-\centering
-\caption{Porcentaje de respuestas AS y BS por bloque}
-\label{tab:pct_as_bs}
-\begin{tabular}{lcc}
-\toprule
-\textbf{Bloque} & \textbf{\% AS} & \textbf{\% BS} \\
-\midrule
-Natural   & 68.33\% & 31.67\% \\
-Invertido & 72.50\% & 27.50\% \\
-\bottomrule
-\end{tabular}
-\end{table}
+En términos comparativos, el bloque natural registró 82 elecciones AS (68.33\%) y 38 elecciones BS (31.67\%), mientras que el bloque invertido mostró 87 elecciones AS (72.50\%) y 33 elecciones BS (27.50\%). La diferencia descriptiva entre bloques fue de 4.17 puntos porcentuales a favor del bloque invertido. Aunque esta diferencia sugiere una ligera tendencia hacia mayor selección de AS en inversión, su magnitud descriptiva es reducida y requiere ser interpretada junto al análisis inferencial.
 
 \subsection{Representación gráfica de los porcentajes}
 
@@ -209,28 +195,9 @@ La Figura~\ref{fig:resumen_porcentajes} muestra la representación gráfica de l
 
 \subsection{Resultados inferenciales}
 
-La Tabla~\ref{tab:inferencial} sintetiza los contrastes preespecificados. Tanto en bloque natural como invertido, la proporción de elecciones AS fue significativamente superior al nivel esperado por azar (50\%), resultado que también se mantuvo en el análisis global (\(N=240\)). Los intervalos de confianza del 95\% se calcularon mediante el método de Wilson \citep{wilson1927probable}.
+El análisis inferencial confirmó que, en ambos bloques, la proporción de elecciones AS fue significativamente superior al nivel esperado por azar (50\%). En el bloque natural, la proporción observada fue 68.33\% (82/120), con IC95\% [59.55\%, 75.98\%], y la prueba binomial exacta bilateral resultó significativa (\(p<0.0001\)). En el bloque invertido, la proporción fue 72.50\% (87/120), con IC95\% [63.91\%, 79.70\%], también significativa frente al azar (\(p<0.0001\)). De forma consistente, el análisis global (169/240; 70.42\%) mantuvo el mismo patrón, con IC95\% [64.36\%, 75.83\%] y \(p<0.0001\). Los intervalos de confianza del 95\% se calcularon mediante el método de Wilson \citep{wilson1927probable}.
 
-No obstante, la comparación directa entre bloques no mostró diferencias estadísticamente significativas en la proporción de respuestas AS (\(z=-0.707\), \(p=0.4795\)). De forma convergente, el contraste de independencia bloque \(\times\) respuesta (AS/BS) tampoco alcanzó significación (\(\chi^2(1)=0.500\), \(p=0.4795\)). El tamaño de efecto asociado fue muy pequeño (\(\phi=0.046\)), compatible con una asociación despreciable en términos prácticos \citep{cohen1988power}.
-
-\begin{table}[H]
-\centering
-\caption{Estadística inferencial: contraste frente al azar y comparación entre bloques}
-\label{tab:inferencial}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lclcc}
-\toprule
-\textbf{Prueba} & \textbf{N} & \textbf{Estadístico / IC95\%} & \textbf{p-valor} & \textbf{Conclusión (\(\alpha=0.05\))} \\
-\midrule
-Natural vs azar (AS=50\%) & 120 & AS=82 (68.33\%), IC95\% [59.55\%, 75.98\%] & < 0.0001 & Significativo \\
-Invertido vs azar (AS=50\%) & 120 & AS=87 (72.50\%), IC95\% [63.91\%, 79.70\%] & < 0.0001 & Significativo \\
-Global vs azar (AS=50\%) & 240 & AS=169 (70.42\%), IC95\% [64.36\%, 75.83\%] & < 0.0001 & Significativo \\
-Natural vs Invertido (proporciones AS) & 240 & Dif=-4.17 pp, z=-0.707 & 0.4795 & No significativo \\
-Asociación bloque-respuesta & 240 & \(\chi^2(1)=0.500\), \(\phi=0.046\) & 0.4795 & No significativo \\
-\bottomrule
-\end{tabular}%
-}
-\end{table}
+No obstante, al contrastar directamente ambos bloques, la diferencia entre proporciones AS no alcanzó significación estadística (diferencia = -4.17 puntos porcentuales; \(z=-0.707\), \(p=0.4795\)). Este resultado se replicó en el contraste de independencia bloque \(\times\) respuesta (AS/BS), que tampoco fue significativo (\(\chi^2(1)=0.500\), \(p=0.4795\)). El tamaño de efecto asociado fue muy pequeño (\(\phi=0.046\)), compatible con una asociación prácticamente nula en términos sustantivos \citep{cohen1988power}. En conjunto, los datos sostienen con claridad un sesgo general hacia la elección de regiones AS, pero no aportan evidencia suficiente para afirmar diferencias entre presentación natural e invertida en esta muestra.
 
 % ---------------------------------------------
 \section{Discusión y conclusiones}
