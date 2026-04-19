@@ -45,7 +45,7 @@ body.experiment-body {
   display: grid;
   place-items: center;
   color: #ffffff;
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 800;
   letter-spacing: 0.04em;
   background: linear-gradient(135deg, var(--primary), var(--primary-2));
@@ -245,7 +245,7 @@ body.immersive-mode .pec-topbar {
   .pec-logo {
     width: 50px;
     height: 50px;
-    font-size: 21px;
+    font-size: 18px;
   }
 
   .pec-subtitle {
