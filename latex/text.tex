@@ -80,6 +80,8 @@ Sobre esta base teórica, el presente estudio plantea una reproducción simplifi
 
 La muestra final estuvo compuesta por cinco participantes adultos (\(N=5\)), reclutados por conveniencia, en línea con el planteamiento docente de la práctica. Para preservar la confidencialidad, los datos se trataron mediante codificación anónima (P1-P5) durante el análisis. La edad osciló entre 21 y 51 años (\(M = 28.60\), \(DT = 12.60\)); la distribución por género fue de cuatro mujeres y un hombre. Todos los participantes completaron el protocolo experimental íntegro (48 ensayos por participante), sin pérdidas de datos.
 
+Aunque el enunciado presenta una implementación mínima con tres participantes para facilitar la práctica, en este informe se analizaron cinco casos válidos disponibles, lo que incrementa ligeramente la estabilidad descriptiva sin modificar la lógica del diseño experimental.
+
 \subsection{Materiales}
 
 La tarea se administró mediante una aplicación web desarrollada ad hoc para la PEC de figura-fondo \cite{amaya2026web}, con código fuente y trazabilidad de implementación disponibles en el repositorio del proyecto \cite{amaya2026repo}. 
@@ -114,6 +116,52 @@ Se analizaron 240 observaciones procedentes de cinco archivos CSV de datos bruto
 
 En términos individuales, se observó heterogeneidad interparticipante moderada en la proporción de respuestas AS (natural: 58.33\%--87.50\%; invertido: 54.17\%--83.33\%), sin un patrón sistemático de incremento o descenso asociado a la orientación en todos los casos.
 
+\subsection{Hojas de recogida de datos y tablas individuales}
+
+Las hojas de recogida de datos de cada participante se conservaron en formato digital y se incluyen como archivos CSV de datos brutos en el repositorio del proyecto \citep{amaya2026repo}. A partir de dichos registros se calcularon las frecuencias absolutas (Tabla~\ref{tab:ind_freq}) y los porcentajes (Tabla~\ref{tab:ind_pct}) de respuestas AS y BS por bloque para cada participante, junto con la media muestral.
+
+\begin{table}[H]
+\centering
+\caption{Resultados individuales por participante: frecuencia absoluta (AS/BS) y media}
+\label{tab:ind_freq}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Participante} & \textbf{Invertido AS} & \textbf{Invertido BS} & \textbf{Natural AS} & \textbf{Natural BS} \\
+\midrule
+P1 & 18 & 6  & 21 & 3  \\
+P2 & 19 & 5  & 15 & 9  \\
+P3 & 13 & 11 & 14 & 10 \\
+P4 & 17 & 7  & 15 & 9  \\
+P5 & 20 & 4  & 17 & 7  \\
+\midrule
+\textbf{Media muestral} & \textbf{17.40} & \textbf{6.60} & \textbf{16.40} & \textbf{7.60} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Resultados individuales por participante: porcentaje de elecciones (AS/BS) y media}
+\label{tab:ind_pct}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Participante} & \textbf{Invertido \%AS} & \textbf{Invertido \%BS} & \textbf{Natural \%AS} & \textbf{Natural \%BS} \\
+\midrule
+P1 & 75.00\% & 25.00\% & 87.50\% & 12.50\% \\
+P2 & 79.17\% & 20.83\% & 62.50\% & 37.50\% \\
+P3 & 54.17\% & 45.83\% & 58.33\% & 41.67\% \\
+P4 & 70.83\% & 29.17\% & 62.50\% & 37.50\% \\
+P5 & 83.33\% & 16.67\% & 70.83\% & 29.17\% \\
+\midrule
+\textbf{Media muestral} & \textbf{72.50\%} & \textbf{27.50\%} & \textbf{68.33\%} & \textbf{31.67\%} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
 \subsection{Resultados descriptivos por bloque}
 
 Las frecuencias agregadas por bloque se presentan en la Tabla~\ref{tab:freq_as_bs}. En ambos bloques predominó la elección de la región de alta significación (AS) sobre la de baja significación (BS).
@@ -147,6 +195,17 @@ Invertido & 72.50\% & 27.50\% \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\subsection{Representación gráfica de los porcentajes}
+
+La Figura~\ref{fig:resumen_porcentajes} muestra la representación gráfica de los porcentajes de elección AS y BS en los dos bloques experimentales para la muestra completa.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\linewidth]{results/grafica_resultados_figura_fondo.png}
+\caption{Porcentajes de elección de regiones AS y BS por bloque (muestra completa).}
+\label{fig:resumen_porcentajes}
+\end{figure}
 
 \subsection{Resultados inferenciales}
 
@@ -185,6 +244,31 @@ La comparación entre bloques (natural vs invertido) no mostró diferencias esta
 Las principales limitaciones metodológicas son: (a) tamaño muestral reducido (\(N=5\)), que limita la precisión inferencial y la generalización; (b) administración online, con control incompleto de variables de presentación (pantalla, brillo, distancia de visionado, posibles distractores); y (c) análisis agregado por bloque, que no modela explícitamente la variabilidad específica de cada estímulo y de cada participante.
 
 En conjunto, la evidencia obtenida respalda la existencia de un sesgo figura-fondo hacia regiones AS y, al mismo tiempo, no aporta soporte para una diferencia entre orientación natural e invertida en este diseño. Como líneas de mejora, se recomienda ampliar la muestra, incrementar el número de ensayos por condición y aplicar modelos multinivel (por ejemplo, regresión logística con efectos aleatorios por participante y estímulo) para estimar con mayor precisión la contribución relativa de la significación estimular y de la orientación.
+
+% ---------------------------------------------
+
+\section*{Apéndice: Hojas de recogida de datos}
+\addcontentsline{toc}{section}{Apéndice: Hojas de recogida de datos}
+Se adjuntan como material digital de la entrega las hojas de recogida de datos de cada participante en formato CSV, generadas automáticamente por la aplicación experimental:
+
+\begin{table}[H]
+\centering
+\caption{Archivos de datos brutos por participante}
+\label{tab:apendice_csv}
+\begin{tabular}{ll}
+\toprule
+\textbf{Participante} & \textbf{Archivo de datos brutos} \\
+\midrule
+P1 & responses/Participante1.csv \\
+P2 & responses/Participante2.csv \\
+P3 & responses/Participante3.csv \\
+P4 & responses/Participante4.csv \\
+P5 & responses/Participante5.csv \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Cada archivo incluye, por ensayo, el bloque, el identificador de estímulo, la respuesta emitida (BLANCO/NEGRO) y la codificación AS/BS empleada en el análisis.
 
 % ---------------------------------------------
 
