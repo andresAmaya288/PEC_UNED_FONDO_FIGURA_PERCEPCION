@@ -68,8 +68,6 @@
 
   const ui = {
     btnGoInstructions: document.getElementById("btn-go-instructions"),
-    btnOpenAnalysis: document.getElementById("btn-open-analysis"),
-    btnOpenAnalysisEnd: document.getElementById("btn-open-analysis-end"),
     btnStartExperiment: document.getElementById("btn-start-experiment"),
     btnStartBlock: document.getElementById("btn-start-block"),
     btnContinue: document.getElementById("btn-continue"),
@@ -85,6 +83,7 @@
     inputSummaryCsv: document.getElementById("input-summary-csv"),
     participantName: document.getElementById("participant-name"),
     participantAge: document.getElementById("participant-age"),
+    participantGender: document.getElementById("participant-gender"),
     participantSessionMeta: document.getElementById("participant-session-meta"),
     analysisParticipantMeta: document.getElementById("analysis-participant-meta"),
     blockTitle: document.getElementById("block-title"),
@@ -184,6 +183,7 @@
           resolve(`${base}.png`);
           return;
         }
+        const path = `${base}.${extensions[index]}`;
         const img = new Image();
         img.onload = () => resolve(path);
         img.onerror = () => {
@@ -427,6 +427,7 @@
           experimentState.records.push({
             participante: experimentState.participant.nombre,
             edad: experimentState.participant.edad,
+            genero: experimentState.participant.genero,
             bloque: blockType,
             ensayo: trialNumber,
             imagen: experimentState.currentTrialObject.imageCode,
@@ -566,6 +567,7 @@
     return parseCsv(text).map((row) => ({
       participante: row.participante || "",
       edad: row.edad || "",
+      genero: row.genero || row.sexo || "",
       bloque: normalizeBlock(row.bloque),
       ensayo: Number(row.ensayo || 0),
       imagen: row.imagen || "",
@@ -703,6 +705,7 @@
       const csv = convertToCsv(analysisState.records, [
         "participante",
         "edad",
+        "genero",
         "bloque",
         "ensayo",
         "imagen",
@@ -761,7 +764,8 @@
 
     const firstRecord = analysisState.records[0];
     if (firstRecord && firstRecord.participante) {
-      ui.analysisParticipantMeta.textContent = `Participante: ${firstRecord.participante} | Edad: ${firstRecord.edad}`;
+      const genero = firstRecord.genero || "-";
+      ui.analysisParticipantMeta.textContent = `Participante: ${firstRecord.participante} | Edad: ${firstRecord.edad} | Género: ${genero}`;
     } else {
       ui.analysisParticipantMeta.textContent = "Sin datos de participante cargados.";
     }
@@ -792,13 +796,14 @@
       records: [...experimentState.records],
       summaryRows
     };
-    ui.participantSessionMeta.textContent = `Participante: ${experimentState.participant.nombre} | Edad: ${experimentState.participant.edad}`;
+    ui.participantSessionMeta.textContent = `Participante: ${experimentState.participant.nombre} | Edad: ${experimentState.participant.edad} | Género: ${experimentState.participant.genero}`;
     showScreen("participantEnd");
   }
 
   function validateParticipantInfo() {
     const nombre = ui.participantName.value.trim();
     const edad = Number(ui.participantAge.value);
+    const genero = ui.participantGender.value;
     const singleNamePattern = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ'-]{2,}$/;
 
     if (!singleNamePattern.test(nombre)) {
@@ -813,7 +818,13 @@
       return null;
     }
 
-    return { nombre, edad };
+    if (!genero) {
+      alert("Selecciona una opcion de genero.");
+      ui.participantGender.focus();
+      return null;
+    }
+
+    return { nombre, edad, genero };
   }
 
   async function readFileText(file) {
@@ -901,6 +912,7 @@
       ui.inputSummaryCsv.value = "";
       ui.participantName.value = "";
       ui.participantAge.value = "";
+      ui.participantGender.value = "";
       showScreen("welcome");
     });
   }
@@ -917,7 +929,7 @@
     validateAsKey();
     bindEvents();
     initExperimentState();
-    experimentState.participant = { nombre: "", edad: "" };
+    experimentState.participant = { nombre: "", edad: "", genero: "" };
     showScreen("welcome");
   }
 
