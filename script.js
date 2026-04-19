@@ -210,14 +210,19 @@
       binary[p] = lum >= 128 ? 255 : 0;
     }
 
-    const cleaned = new Uint8Array(binary);
+    const cleaned = new Uint8Array(binary.length);
 
-    // Limpieza suave: corrige pixeles aislados sin deformar la figura global.
-    for (let y = 1; y < height - 1; y += 1) {
-      for (let x = 1; x < width - 1; x += 1) {
+    // Limpieza local rapida: reduce ruido sin bloquear el flujo del ensayo.
+    for (let y = 0; y < height; y += 1) {
+      for (let x = 0; x < width; x += 1) {
         const idx = y * width + x;
-        let whiteNeighbors = 0;
 
+        if (x === 0 || y === 0 || x === width - 1 || y === height - 1) {
+          cleaned[idx] = binary[idx];
+          continue;
+        }
+
+        let whiteNeighbors = 0;
         for (let oy = -1; oy <= 1; oy += 1) {
           for (let ox = -1; ox <= 1; ox += 1) {
             if (ox === 0 && oy === 0) continue;
@@ -226,75 +231,15 @@
           }
         }
 
-        if (binary[idx] === 255 && whiteNeighbors <= 1) {
-          cleaned[idx] = 0;
-        } else if (binary[idx] === 0 && whiteNeighbors >= 7) {
-          cleaned[idx] = 255;
+        if (binary[idx] === 0) {
+          // Si el pixel negro esta rodeado de blanco, se corrige a blanco.
+          cleaned[idx] = whiteNeighbors >= 6 ? 255 : 0;
+        } else {
+          // Conserva blanco salvo ruido blanco muy aislado.
+          cleaned[idx] = whiteNeighbors <= 1 ? 0 : 255;
         }
       }
     }
-
-    // Elimina motas negras pequenas encerradas en regiones blancas.
-    const visited = new Uint8Array(width * height);
-    const queue = new Int32Array(width * height);
-
-    function removeSmallBlackIslands(maxIslandSize) {
-      for (let y = 0; y < height; y += 1) {
-        for (let x = 0; x < width; x += 1) {
-          const start = y * width + x;
-          if (visited[start] || cleaned[start] !== 0) {
-            continue;
-          }
-
-          let qStart = 0;
-          let qEnd = 0;
-          queue[qEnd] = start;
-          qEnd += 1;
-          visited[start] = 1;
-
-          const island = [];
-
-          while (qStart < qEnd) {
-            const idx = queue[qStart];
-            qStart += 1;
-            island.push(idx);
-
-            const px = idx % width;
-            const py = (idx - px) / width;
-
-            const neighbors = [
-              idx - 1,
-              idx + 1,
-              idx - width,
-              idx + width
-            ];
-
-            if (px === 0) neighbors[0] = -1;
-            if (px === width - 1) neighbors[1] = -1;
-            if (py === 0) neighbors[2] = -1;
-            if (py === height - 1) neighbors[3] = -1;
-
-            for (let n = 0; n < neighbors.length; n += 1) {
-              const nIdx = neighbors[n];
-              if (nIdx < 0 || visited[nIdx] || cleaned[nIdx] !== 0) {
-                continue;
-              }
-              visited[nIdx] = 1;
-              queue[qEnd] = nIdx;
-              qEnd += 1;
-            }
-          }
-
-          if (island.length <= maxIslandSize) {
-            for (let i = 0; i < island.length; i += 1) {
-              cleaned[island[i]] = 255;
-            }
-          }
-        }
-      }
-    }
-
-    removeSmallBlackIslands(20);
 
     for (let i = 0, p = 0; p < cleaned.length; i += 4, p += 1) {
       const value = cleaned[p];
