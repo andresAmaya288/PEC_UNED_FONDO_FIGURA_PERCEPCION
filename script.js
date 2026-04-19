@@ -17,8 +17,7 @@
 
   const CONFIG = {
     // Valores validos en URL: ?block1=natural o ?block1=invertido
-    forcedFirstBlock: new URLSearchParams(window.location.search).get("block1"),
-    mode: new URLSearchParams(window.location.search).get("mode")
+    forcedFirstBlock: new URLSearchParams(window.location.search).get("block1")
   };
 
   const BLOCKS = {
@@ -935,7 +934,8 @@
     ui.btnContinue.disabled = true;
     updateHeaderProgress(0);
 
-    if ((CONFIG.mode || "").toLowerCase() === "analysis") {
+    const isAnalysisPage = window.location.pathname.toLowerCase().endsWith("/analysis.html");
+    if (isAnalysisPage) {
       showAnalysis(analysisState.summaryRows, analysisState.records);
     } else {
       showScreen("welcome");

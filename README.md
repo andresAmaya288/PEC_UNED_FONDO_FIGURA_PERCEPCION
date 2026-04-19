@@ -5,7 +5,7 @@ Aplicación web estática (HTML + CSS + JavaScript) para ejecutar un experimento
 ## URL pública
 
 - Experimento: https://andresamaya288.github.io/PEC_UNED_FONDO_FIGURA_PERCEPCION/
-- Análisis: https://andresamaya288.github.io/PEC_UNED_FONDO_FIGURA_PERCEPCION/?mode=analysis
+- Análisis: https://andresamaya288.github.io/PEC_UNED_FONDO_FIGURA_PERCEPCION/analysis.html
 
 ## Objetivo
 
