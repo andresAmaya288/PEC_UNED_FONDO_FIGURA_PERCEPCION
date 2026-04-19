@@ -62,17 +62,29 @@
     trial: document.getElementById("screen-trial"),
     response: document.getElementById("screen-response"),
     breakScreen: document.getElementById("screen-break"),
-    results: document.getElementById("screen-results")
+    participantEnd: document.getElementById("screen-participant-end"),
+    analysis: document.getElementById("screen-analysis")
   };
 
   const ui = {
     btnGoInstructions: document.getElementById("btn-go-instructions"),
+    btnOpenAnalysis: document.getElementById("btn-open-analysis"),
+    btnOpenAnalysisEnd: document.getElementById("btn-open-analysis-end"),
     btnStartExperiment: document.getElementById("btn-start-experiment"),
     btnStartBlock: document.getElementById("btn-start-block"),
     btnContinue: document.getElementById("btn-continue"),
+    btnParticipantFinish: document.getElementById("btn-participant-finish"),
     btnRestart: document.getElementById("btn-restart"),
+    btnBackWelcome: document.getElementById("btn-back-welcome"),
+    btnUseCurrentSession: document.getElementById("btn-use-current-session"),
+    btnProcessCsv: document.getElementById("btn-process-csv"),
     btnDownloadRaw: document.getElementById("btn-download-raw"),
     btnDownloadSummary: document.getElementById("btn-download-summary"),
+    btnDownloadChart: document.getElementById("btn-download-chart"),
+    inputRawCsv: document.getElementById("input-raw-csv"),
+    inputSummaryCsv: document.getElementById("input-summary-csv"),
+    participantName: document.getElementById("participant-name"),
+    participantAge: document.getElementById("participant-age"),
     blockTitle: document.getElementById("block-title"),
     blockDescription: document.getElementById("block-description"),
     fixation: document.getElementById("fixation"),
@@ -87,6 +99,7 @@
   };
 
   let experimentState;
+  let analysisState = { records: [], summaryRows: [] };
   let chartInstance = null;
 
   function resolveFirstBlock() {
@@ -102,6 +115,7 @@
     const secondBlock = firstBlock === "natural" ? "invertido" : "natural";
 
     experimentState = {
+      participant: null,
       blockOrder: [firstBlock, secondBlock],
       currentBlockIndex: 0,
       currentTrialIndex: 0,
@@ -267,6 +281,8 @@
           const label = getAsBsLabel(experimentState.currentTrialObject.imageCode, response);
 
           experimentState.records.push({
+            participante: experimentState.participant.nombre,
+            edad: experimentState.participant.edad,
             bloque: blockType,
             ensayo: trialNumber,
             imagen: experimentState.currentTrialObject.imageCode,
@@ -317,6 +333,129 @@
 
   function blockLabel(block) {
     return block === "natural" ? "Natural" : "Invertido";
+  }
+
+  function normalizeHeader(header) {
+    return String(header || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, "")
+      .replaceAll("_", "");
+  }
+
+  function normalizeBlock(value) {
+    const raw = String(value || "").toLowerCase().trim();
+    if (raw === "natural") return "natural";
+    if (raw === "invertido") return "invertido";
+    return raw;
+  }
+
+  function toNumber(value) {
+    const n = Number(String(value || "").replace(",", "."));
+    return Number.isFinite(n) ? n : 0;
+  }
+
+  function parseCsv(text) {
+    const rows = [];
+    let current = "";
+    let row = [];
+    let inQuotes = false;
+
+    for (let i = 0; i < text.length; i += 1) {
+      const char = text[i];
+      const next = text[i + 1];
+
+      if (char === '"') {
+        if (inQuotes && next === '"') {
+          current += '"';
+          i += 1;
+        } else {
+          inQuotes = !inQuotes;
+        }
+        continue;
+      }
+
+      if (char === "," && !inQuotes) {
+        row.push(current);
+        current = "";
+        continue;
+      }
+
+      if ((char === "\n" || char === "\r") && !inQuotes) {
+        if (char === "\r" && next === "\n") {
+          i += 1;
+        }
+        row.push(current);
+        if (row.some((cell) => cell !== "")) {
+          rows.push(row);
+        }
+        row = [];
+        current = "";
+        continue;
+      }
+
+      current += char;
+    }
+
+    row.push(current);
+    if (row.some((cell) => cell !== "")) {
+      rows.push(row);
+    }
+
+    if (rows.length === 0) {
+      return [];
+    }
+
+    const rawHeaders = rows[0];
+    const headers = rawHeaders.map((header) => normalizeHeader(header));
+    return rows.slice(1).map((cells) => {
+      const entry = {};
+      headers.forEach((header, index) => {
+        entry[header] = (cells[index] || "").trim();
+      });
+      return entry;
+    });
+  }
+
+  function parseRawRecords(text) {
+    return parseCsv(text).map((row) => ({
+      participante: row.participante || "",
+      edad: row.edad || "",
+      bloque: normalizeBlock(row.bloque),
+      ensayo: Number(row.ensayo || 0),
+      imagen: row.imagen || "",
+      respuesta: row.respuesta || "",
+      clasificacion: row.clasificacion || row.asbs || ""
+    }));
+  }
+
+  function parseSummaryRows(text) {
+    return parseCsv(text).map((row) => ({
+      bloque: normalizeBlock(row.bloque),
+      asCount: toNumber(row.frecuenciaas || row.as || row.ascount),
+      bsCount: toNumber(row.frecuenciabs || row.bs || row.bscount),
+      asPct: toNumber(row.porcentajeas || row.aspct),
+      bsPct: toNumber(row.porcentajebs || row.bspct)
+    }));
+  }
+
+  function computeSummaryFromRecords(records) {
+    const blockNames = ["natural", "invertido"];
+    return blockNames.map((block) => {
+      const blockRecords = records.filter((r) => r.bloque === block);
+      const asCount = blockRecords.filter((r) => r.clasificacion === "AS").length;
+      const bsCount = blockRecords.filter((r) => r.clasificacion === "BS").length;
+      const total = blockRecords.length || 1;
+
+      return {
+        bloque: block,
+        asCount,
+        bsCount,
+        asPct: (asCount / total) * 100,
+        bsPct: (bsCount / total) * 100
+      };
+    });
   }
 
   function renderResultsTables(summaryRows) {
@@ -417,7 +556,9 @@
 
   function setupExportButtons(summaryRows) {
     ui.btnDownloadRaw.onclick = () => {
-      const csv = convertToCsv(experimentState.records, [
+      const csv = convertToCsv(analysisState.records, [
+        "participante",
+        "edad",
         "bloque",
         "ensayo",
         "imagen",
@@ -445,14 +586,30 @@
       ]);
       downloadCsv("resultados_figura_fondo.csv", csv);
     };
+
+    ui.btnDownloadChart.onclick = () => {
+      if (!chartInstance) {
+        return;
+      }
+      const dataUrl = chartInstance.toBase64Image("image/png", 1);
+      const anchor = document.createElement("a");
+      anchor.href = dataUrl;
+      anchor.download = "grafica_resultados_figura_fondo.png";
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+    };
   }
 
-  function showResults() {
-    const summaryRows = computeSummary();
+  function showAnalysis(summaryRows, records) {
+    analysisState = {
+      records: records || analysisState.records,
+      summaryRows: summaryRows || analysisState.summaryRows
+    };
     renderResultsTables(summaryRows);
     renderResultsChart(summaryRows);
     setupExportButtons(summaryRows);
-    showScreen("results");
+    showScreen("analysis");
   }
 
   async function startBlockFlow() {
@@ -470,14 +627,91 @@
       return;
     }
 
-    showResults();
+    const summaryRows = computeSummaryFromRecords(experimentState.records);
+    analysisState = {
+      records: [...experimentState.records],
+      summaryRows
+    };
+    showScreen("participantEnd");
+  }
+
+  function validateParticipantInfo() {
+    const nombre = ui.participantName.value.trim();
+    const edad = Number(ui.participantAge.value);
+    const singleNamePattern = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ'-]{2,}$/;
+
+    if (!singleNamePattern.test(nombre)) {
+      alert("Introduce solo nombre (sin apellidos), sin espacios ni numeros.");
+      ui.participantName.focus();
+      return null;
+    }
+
+    if (!Number.isInteger(edad) || edad < 1 || edad > 120) {
+      alert("Introduce una edad valida entre 1 y 120.");
+      ui.participantAge.focus();
+      return null;
+    }
+
+    return { nombre, edad };
+  }
+
+  async function readFileText(file) {
+    if (!file) return "";
+    return file.text();
+  }
+
+  async function processCsvUploads() {
+    const rawFile = ui.inputRawCsv.files[0];
+    const summaryFile = ui.inputSummaryCsv.files[0];
+
+    if (!rawFile && !summaryFile) {
+      alert("Selecciona al menos un CSV para procesar.");
+      return;
+    }
+
+    const [rawText, summaryText] = await Promise.all([readFileText(rawFile), readFileText(summaryFile)]);
+
+    let loadedRecords = analysisState.records;
+    let loadedSummary = analysisState.summaryRows;
+
+    if (rawText) {
+      loadedRecords = parseRawRecords(rawText);
+      loadedSummary = computeSummaryFromRecords(loadedRecords);
+    }
+
+    if (summaryText) {
+      loadedSummary = parseSummaryRows(summaryText);
+    }
+
+    showAnalysis(loadedSummary, loadedRecords);
   }
 
   function bindEvents() {
     ui.btnGoInstructions.addEventListener("click", () => showScreen("instructions"));
+    ui.btnOpenAnalysis.addEventListener("click", () => showAnalysis(analysisState.summaryRows, analysisState.records));
+    ui.btnOpenAnalysisEnd.addEventListener("click", () => showAnalysis(analysisState.summaryRows, analysisState.records));
+    ui.btnBackWelcome.addEventListener("click", () => showScreen("welcome"));
+    ui.btnParticipantFinish.addEventListener("click", () => showScreen("welcome"));
+
+    ui.btnUseCurrentSession.addEventListener("click", () => {
+      if (!analysisState.records.length) {
+        alert("Aun no hay datos de sesion. Ejecuta el experimento o carga un CSV.");
+        return;
+      }
+      showAnalysis(analysisState.summaryRows, analysisState.records);
+    });
+
+    ui.btnProcessCsv.addEventListener("click", async () => {
+      await processCsvUploads();
+    });
 
     ui.btnStartExperiment.addEventListener("click", async () => {
+      const participant = validateParticipantInfo();
+      if (!participant) {
+        return;
+      }
       initExperimentState();
+      experimentState.participant = participant;
       await startBlockFlow();
     });
 
@@ -495,6 +729,11 @@
         chartInstance = null;
       }
       initExperimentState();
+      analysisState = { records: [], summaryRows: [] };
+      ui.inputRawCsv.value = "";
+      ui.inputSummaryCsv.value = "";
+      ui.participantName.value = "";
+      ui.participantAge.value = "";
       showScreen("welcome");
     });
   }
@@ -511,6 +750,7 @@
     validateAsKey();
     bindEvents();
     initExperimentState();
+    experimentState.participant = { nombre: "", edad: "" };
     showScreen("welcome");
   }
 

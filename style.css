@@ -37,6 +37,26 @@ body {
   color: var(--text);
 }
 
+.rubin-demo {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  background: #fbfcfe;
+}
+
+.rubin-demo__title {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.rubin-svg {
+  width: 100%;
+  max-height: 190px;
+  border: 1px solid #dbe2ea;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
 .trial-stage {
   overflow: hidden;
 }
