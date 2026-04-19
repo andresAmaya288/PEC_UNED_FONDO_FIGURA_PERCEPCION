@@ -39,13 +39,13 @@ body.experiment-body {
 }
 
 .pec-logo {
-  width: 76px;
-  height: 76px;
-  border-radius: 14px;
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
   display: grid;
   place-items: center;
   color: #ffffff;
-  font-size: 34px;
+  font-size: 30px;
   font-weight: 800;
   letter-spacing: 0.04em;
   background: linear-gradient(135deg, var(--primary), var(--primary-2));
@@ -54,23 +54,49 @@ body.experiment-body {
 
 .pec-title {
   margin: 0;
-  font-size: clamp(1.2rem, 2.6vw, 2rem);
+  font-size: clamp(1.08rem, 2.2vw, 1.72rem);
   font-weight: 800;
   letter-spacing: -0.02em;
 }
 
 .pec-subtitle {
   color: var(--muted);
-  font-size: 1rem;
+  font-size: 0.92rem;
 }
 
 .pec-meta {
   display: flex;
   gap: 14px;
   color: var(--muted);
-  font-size: 1.4rem;
+  font-size: 0.84rem;
   font-weight: 500;
   white-space: nowrap;
+}
+
+.pec-progress-shell {
+  display: grid;
+  gap: 8px;
+}
+
+.pec-progress-wrap {
+  height: 12px;
+  border-radius: 999px;
+  background: #d7deea;
+  overflow: hidden;
+}
+
+.pec-progress {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #2f6fed, #1765d9);
+  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.pec-progress-label {
+  text-align: right;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 700;
 }
 
 .lab-card {
@@ -124,11 +150,13 @@ body.immersive-mode .pec-topbar {
 }
 
 .rubin-svg {
-  width: 100%;
-  max-height: 190px;
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
   border: 1px solid #dbe2ea;
   border-radius: 8px;
-  margin-bottom: 8px;
+  margin: 0 auto 8px;
 }
 
 .trial-stage {
@@ -211,9 +239,9 @@ body.immersive-mode .pec-topbar {
   }
 
   .pec-logo {
-    width: 60px;
-    height: 60px;
-    font-size: 28px;
+    width: 56px;
+    height: 56px;
+    font-size: 24px;
   }
 
   .pec-subtitle {

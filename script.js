@@ -7,6 +7,7 @@
 
 (() => {
   const TRIALS_PER_BLOCK = 24;
+  const TOTAL_TRIALS = TRIALS_PER_BLOCK * 2;
   const STIMULUS_DURATION_MS = 100;
   const FIXATION_MIN_MS = 500;
   const FIXATION_MAX_MS = 1000;
@@ -99,6 +100,9 @@
     freqTableBody: document.querySelector("#table-frequency tbody"),
     pctTableBody: document.querySelector("#table-percentage tbody"),
     chartCanvas: document.getElementById("results-chart")
+    ,
+    headerProgress: document.getElementById("pec-progress"),
+    headerProgressLabel: document.getElementById("pec-progress-label")
   };
 
   let experimentState;
@@ -163,6 +167,13 @@
 
     const immersiveScreens = new Set(["trial", "response"]);
     document.body.classList.toggle("immersive-mode", immersiveScreens.has(screenKey));
+  }
+
+  function updateHeaderProgress(completed) {
+    const value = Math.max(0, Math.min(TOTAL_TRIALS, Number(completed) || 0));
+    const pct = (value / TOTAL_TRIALS) * 100;
+    ui.headerProgress.style.width = `${pct}%`;
+    ui.headerProgressLabel.textContent = `Paso ${value}/${TOTAL_TRIALS}`;
   }
 
   function hideStimulusElements() {
@@ -324,6 +335,8 @@
             respuesta: response,
             clasificacion: label
           });
+
+          updateHeaderProgress(experimentState.records.length);
 
           resolve();
         };
@@ -687,6 +700,7 @@
       records: [...experimentState.records],
       summaryRows
     };
+    updateHeaderProgress(experimentState.records.length);
     ui.participantSessionMeta.textContent = `Participante: ${experimentState.participant.nombre} | Edad: ${experimentState.participant.edad} | Género: ${experimentState.participant.genero}`;
     showScreen("participantEnd");
   }
@@ -740,6 +754,7 @@
     if (rawText) {
       loadedRecords = parseRawRecords(rawText);
       loadedSummary = computeSummaryFromRecords(loadedRecords);
+      updateHeaderProgress(loadedRecords.length);
     }
 
     if (summaryText) {
@@ -781,6 +796,7 @@
       }
       initExperimentState();
       experimentState.participant = participant;
+      updateHeaderProgress(0);
       await startBlockFlow();
     });
 
@@ -809,6 +825,7 @@
       ui.participantName.value = "";
       ui.participantAge.value = "";
       ui.participantGender.value = "";
+      updateHeaderProgress(0);
       showScreen("welcome");
     });
   }
@@ -828,6 +845,7 @@
     experimentState.participant = { nombre: "", edad: "", genero: "" };
     ui.breakTimer.textContent = formatBreakTime(BREAK_DURATION_SECONDS);
     ui.btnContinue.disabled = true;
+    updateHeaderProgress(0);
     showScreen("welcome");
   }
 
