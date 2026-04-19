@@ -2,6 +2,11 @@
 
 Aplicación web estática (HTML + CSS + JavaScript) para ejecutar un experimento perceptivo de organización figura-fondo en GitHub Pages.
 
+## URL pública
+
+- Experimento: https://andresamaya288.github.io/PEC_UNED_FONDO_FIGURA_PERCEPCION/
+- Análisis: https://andresamaya288.github.io/PEC_UNED_FONDO_FIGURA_PERCEPCION/?mode=analysis
+
 ## Objetivo
 
 Evaluar cómo el reconocimiento de objetos influye en la asignación figura-fondo.

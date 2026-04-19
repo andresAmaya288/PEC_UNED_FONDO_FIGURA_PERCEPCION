@@ -17,7 +17,8 @@
 
   const CONFIG = {
     // Valores validos en URL: ?block1=natural o ?block1=invertido
-    forcedFirstBlock: new URLSearchParams(window.location.search).get("block1")
+    forcedFirstBlock: new URLSearchParams(window.location.search).get("block1"),
+    mode: new URLSearchParams(window.location.search).get("mode")
   };
 
   const BLOCKS = {
@@ -73,6 +74,7 @@
     btnStartExperiment: document.getElementById("btn-start-experiment"),
     btnStartBlock: document.getElementById("btn-start-block"),
     btnContinue: document.getElementById("btn-continue"),
+    btnDownloadParticipantReport: document.getElementById("btn-download-participant-report"),
     btnParticipantFinish: document.getElementById("btn-participant-finish"),
     btnRestart: document.getElementById("btn-restart"),
     btnBackWelcome: document.getElementById("btn-back-welcome"),
@@ -94,8 +96,6 @@
     fixation: document.getElementById("fixation"),
     stimulusImage: document.getElementById("stimulus-image"),
     mask: document.getElementById("mask"),
-    trialCounter: document.getElementById("trial-counter"),
-    trialTotal: document.getElementById("trial-total"),
     responseButtons: document.querySelectorAll(".response-btn"),
     freqTableBody: document.querySelector("#table-frequency tbody"),
     pctTableBody: document.querySelector("#table-percentage tbody"),
@@ -167,13 +167,50 @@
 
     const immersiveScreens = new Set(["trial", "response"]);
     document.body.classList.toggle("immersive-mode", immersiveScreens.has(screenKey));
+
+    if (experimentState && Array.isArray(experimentState.records)) {
+      updateHeaderProgress(experimentState.records.length);
+    }
   }
 
   function updateHeaderProgress(completed) {
     const value = Math.max(0, Math.min(TOTAL_TRIALS, Number(completed) || 0));
-    const pct = (value / TOTAL_TRIALS) * 100;
+    const pct = value === 0 ? 0 : Math.max((value / TOTAL_TRIALS) * 100, 2);
     ui.headerProgress.style.width = `${pct}%`;
     ui.headerProgressLabel.textContent = `Paso ${value}/${TOTAL_TRIALS}`;
+  }
+
+  function buildParticipantReportRows(records) {
+    if (!records.length) return [];
+
+    const participant = records[0].participante || "";
+    const edad = records[0].edad || "";
+    const genero = records[0].genero || "";
+    const summary = computeSummaryFromRecords(records);
+
+    return records.map((row) => {
+      const blockSummary = summary.find((s) => s.bloque === row.bloque) || {
+        asCount: 0,
+        bsCount: 0,
+        asPct: 0,
+        bsPct: 0
+      };
+
+      return {
+        participante: participant,
+        edad,
+        genero,
+        bloque: row.bloque,
+        ensayo: row.ensayo,
+        imagen: row.imagen,
+        respuesta: row.respuesta,
+        clasificacion: row.clasificacion,
+        frecuencia_AS_bloque: blockSummary.asCount,
+        frecuencia_BS_bloque: blockSummary.bsCount,
+        porcentaje_AS_bloque: blockSummary.asPct.toFixed(2),
+        porcentaje_BS_bloque: blockSummary.bsPct.toFixed(2)
+      };
+    });
   }
 
   function hideStimulusElements() {
@@ -302,8 +339,6 @@
     return new Promise((resolve) => {
       const blockType = getCurrentBlockType();
       const trialNumber = experimentState.currentTrialIndex + 1;
-      ui.trialCounter.textContent = String(trialNumber);
-      ui.trialTotal.textContent = String(TRIALS_PER_BLOCK);
 
       showScreen("response");
 
@@ -769,6 +804,30 @@
     ui.btnBackWelcome.addEventListener("click", () => showScreen("welcome"));
     ui.btnParticipantFinish.addEventListener("click", () => showScreen("welcome"));
 
+    ui.btnDownloadParticipantReport.addEventListener("click", () => {
+      if (!experimentState || !experimentState.records.length) {
+        alert("No hay datos del participante para exportar.");
+        return;
+      }
+
+      const rows = buildParticipantReportRows(experimentState.records);
+      const csv = convertToCsv(rows, [
+        "participante",
+        "edad",
+        "genero",
+        "bloque",
+        "ensayo",
+        "imagen",
+        "respuesta",
+        "clasificacion",
+        "frecuencia_AS_bloque",
+        "frecuencia_BS_bloque",
+        "porcentaje_AS_bloque",
+        "porcentaje_BS_bloque"
+      ]);
+      downloadCsv("informe_participante_figura_fondo.csv", csv);
+    });
+
     // Acceso interno no visible al panel de investigador.
     document.addEventListener("keydown", (event) => {
       if (event.ctrlKey && event.altKey && event.shiftKey && event.key.toLowerCase() === "r") {
@@ -846,7 +905,12 @@
     ui.breakTimer.textContent = formatBreakTime(BREAK_DURATION_SECONDS);
     ui.btnContinue.disabled = true;
     updateHeaderProgress(0);
-    showScreen("welcome");
+
+    if ((CONFIG.mode || "").toLowerCase() === "analysis") {
+      showAnalysis(analysisState.summaryRows, analysisState.records);
+    } else {
+      showScreen("welcome");
+    }
   }
 
   bootstrap();
