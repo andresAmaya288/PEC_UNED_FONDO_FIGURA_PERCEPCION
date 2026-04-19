@@ -101,6 +101,7 @@
   let experimentState;
   let analysisState = { records: [], summaryRows: [] };
   let chartInstance = null;
+  const processedStimulusCache = new Map();
 
   function resolveFirstBlock() {
     const requested = (CONFIG.forcedFirstBlock || "").toLowerCase();
@@ -181,8 +182,6 @@
           resolve(`${base}.png`);
           return;
         }
-
-        const path = `${base}.${extensions[index]}`;
         const img = new Image();
         img.onload = () => resolve(path);
         img.onerror = () => {
@@ -194,6 +193,87 @@
 
       tryNext();
     });
+  }
+
+  function loadImage(path) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = path;
+    });
+  }
+
+  function createCleanBinaryStimulus(img) {
+    const width = img.naturalWidth || img.width;
+    const height = img.naturalHeight || img.height;
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    ctx.drawImage(img, 0, 0, width, height);
+
+    const srcData = ctx.getImageData(0, 0, width, height);
+    const data = srcData.data;
+    const binary = new Uint8Array(width * height);
+
+    for (let i = 0, p = 0; i < data.length; i += 4, p += 1) {
+      const lum = data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114;
+      binary[p] = lum >= 128 ? 255 : 0;
+    }
+
+    const cleaned = new Uint8Array(binary);
+
+    // Limpieza suave: corrige pixeles aislados sin deformar la figura global.
+    for (let y = 1; y < height - 1; y += 1) {
+      for (let x = 1; x < width - 1; x += 1) {
+        const idx = y * width + x;
+        let whiteNeighbors = 0;
+
+        for (let oy = -1; oy <= 1; oy += 1) {
+          for (let ox = -1; ox <= 1; ox += 1) {
+            if (ox === 0 && oy === 0) continue;
+            const nIdx = (y + oy) * width + (x + ox);
+            if (binary[nIdx] === 255) whiteNeighbors += 1;
+          }
+        }
+
+        if (binary[idx] === 255 && whiteNeighbors <= 1) {
+          cleaned[idx] = 0;
+        } else if (binary[idx] === 0 && whiteNeighbors >= 7) {
+          cleaned[idx] = 255;
+        }
+      }
+    }
+
+    for (let i = 0, p = 0; p < cleaned.length; i += 4, p += 1) {
+      const value = cleaned[p];
+      data[i] = value;
+      data[i + 1] = value;
+      data[i + 2] = value;
+      data[i + 3] = 255;
+    }
+
+    ctx.putImageData(srcData, 0, 0);
+    return canvas.toDataURL("image/png");
+  }
+
+  async function getProcessedStimulusSrc(imageCode) {
+    if (processedStimulusCache.has(imageCode)) {
+      return processedStimulusCache.get(imageCode);
+    }
+
+    const path = await getStimulusPath(imageCode);
+    try {
+      const img = await loadImage(path);
+      const processedSrc = createCleanBinaryStimulus(img);
+      processedStimulusCache.set(imageCode, processedSrc);
+      return processedSrc;
+    } catch {
+      processedStimulusCache.set(imageCode, path);
+      return path;
+    }
   }
 
   function getAsBsLabel(imageCode, response) {
@@ -241,8 +321,8 @@
 
     ui.fixation.classList.add("hidden");
 
-    const stimulusPath = await getStimulusPath(trialObject.imageCode);
-    ui.stimulusImage.src = stimulusPath;
+    const stimulusSrc = await getProcessedStimulusSrc(trialObject.imageCode);
+    ui.stimulusImage.src = stimulusSrc;
     ui.stimulusImage.classList.remove("hidden");
     await wait(STIMULUS_DURATION_MS);
 
@@ -602,13 +682,21 @@
   }
 
   function showAnalysis(summaryRows, records) {
+    const rows = summaryRows || analysisState.summaryRows || [];
+    const rowsForRender = rows.length
+      ? rows
+      : [
+          { bloque: "natural", asCount: 0, bsCount: 0, asPct: 0, bsPct: 0 },
+          { bloque: "invertido", asCount: 0, bsCount: 0, asPct: 0, bsPct: 0 }
+        ];
+
     analysisState = {
       records: records || analysisState.records,
-      summaryRows: summaryRows || analysisState.summaryRows
+      summaryRows: rows
     };
-    renderResultsTables(summaryRows);
-    renderResultsChart(summaryRows);
-    setupExportButtons(summaryRows);
+    renderResultsTables(rowsForRender);
+    renderResultsChart(rowsForRender);
+    setupExportButtons(rowsForRender);
     showScreen("analysis");
   }
 
@@ -688,10 +776,16 @@
 
   function bindEvents() {
     ui.btnGoInstructions.addEventListener("click", () => showScreen("instructions"));
-    ui.btnOpenAnalysis.addEventListener("click", () => showAnalysis(analysisState.summaryRows, analysisState.records));
-    ui.btnOpenAnalysisEnd.addEventListener("click", () => showAnalysis(analysisState.summaryRows, analysisState.records));
     ui.btnBackWelcome.addEventListener("click", () => showScreen("welcome"));
     ui.btnParticipantFinish.addEventListener("click", () => showScreen("welcome"));
+
+    // Acceso interno no visible al panel de investigador.
+    document.addEventListener("keydown", (event) => {
+      if (event.ctrlKey && event.altKey && event.shiftKey && event.key.toLowerCase() === "r") {
+        event.preventDefault();
+        showAnalysis(analysisState.summaryRows, analysisState.records);
+      }
+    });
 
     ui.btnUseCurrentSession.addEventListener("click", () => {
       if (!analysisState.records.length) {

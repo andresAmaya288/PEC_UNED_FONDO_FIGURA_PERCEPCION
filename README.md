@@ -21,7 +21,7 @@ En cada ensayo, el participante responde qué color percibe como figura (delante
 	- Descanso
 	- Inicio bloque 2
 	- Ensayos bloque 2
-	- Resultados
+	- Cierre de participante
 - 2 bloques experimentales:
 	- Natural
 	- Invertido
@@ -46,6 +46,10 @@ En cada ensayo, el participante responde qué color percibe como figura (delante
 	- Tabla de frecuencias (AS/BS por bloque)
 	- Tabla de porcentajes (AS/BS por bloque)
 	- Gráfica de barras con Chart.js
+- Panel de análisis para investigador:
+	- Se accede por un mecanismo interno no visible para el participante.
+	- Permite cargar CSV de datos brutos y/o de resultados para su análisis.
+	- Permite descargar la gráfica en PNG.
 - Exportación CSV:
 	- Datos brutos
 	- Resumen de resultados
