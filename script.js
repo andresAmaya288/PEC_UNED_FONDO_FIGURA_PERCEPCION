@@ -191,13 +191,31 @@
   }
 
   function setBlockStartScreen() {
-    const blockType = getCurrentBlockType();
     const blockNum = experimentState.currentBlockIndex + 1;
-    const blockLabel = blockType === "natural" ? "NATURAL" : "INVERTIDO";
 
     ui.blockTitle.textContent = `Inicio bloque ${blockNum}`;
-    ui.blockDescription.textContent = `En este bloque verás estímulos en formato ${blockLabel}.`;
+    ui.blockDescription.textContent = "Pulsa para comenzar el siguiente bloque de ensayos.";
     showScreen("blockStart");
+  }
+
+  function applyRandomNoiseMask() {
+    const canvas = document.createElement("canvas");
+    canvas.width = 96;
+    canvas.height = 96;
+
+    const context = canvas.getContext("2d");
+    const imageData = context.createImageData(canvas.width, canvas.height);
+
+    for (let i = 0; i < imageData.data.length; i += 4) {
+      const value = Math.random() < 0.5 ? 0 : 255;
+      imageData.data[i] = value;
+      imageData.data[i + 1] = value;
+      imageData.data[i + 2] = value;
+      imageData.data[i + 3] = 255;
+    }
+
+    context.putImageData(imageData, 0, 0);
+    ui.mask.style.backgroundImage = `url(${canvas.toDataURL("image/png")})`;
   }
 
   async function runTrial(trialObject) {
@@ -215,6 +233,7 @@
     await wait(STIMULUS_DURATION_MS);
 
     ui.stimulusImage.classList.add("hidden");
+    applyRandomNoiseMask();
     ui.mask.classList.remove("hidden");
     await wait(randomInt(MASK_MIN_MS, MASK_MAX_MS));
     ui.mask.classList.add("hidden");

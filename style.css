@@ -70,13 +70,9 @@ body {
   width: min(88vw, 640px);
   height: min(55vh, 420px);
   border: 1px solid #dbe2ea;
-  background: repeating-linear-gradient(
-    45deg,
-    #b9c3cf,
-    #b9c3cf 8px,
-    #c8d0da 8px,
-    #c8d0da 16px
-  );
+  background-color: #ffffff;
+  background-repeat: repeat;
+  background-size: 192px 192px;
 }
 
 .hidden {
