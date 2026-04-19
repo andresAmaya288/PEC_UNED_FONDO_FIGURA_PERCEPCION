@@ -14,6 +14,12 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
 body.experiment-body {
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg) 40%, var(--bg-bottom) 100%);
@@ -36,6 +42,7 @@ body.experiment-body {
   display: flex;
   align-items: center;
   gap: 14px;
+  min-width: 0;
 }
 
 .pec-logo {
@@ -57,6 +64,7 @@ body.experiment-body {
   font-size: clamp(1.08rem, 2.2vw, 1.72rem);
   font-weight: 800;
   letter-spacing: -0.02em;
+  line-height: 1.1;
 }
 
 .pec-subtitle {
@@ -71,6 +79,8 @@ body.experiment-body {
   font-size: 0.84rem;
   font-weight: 500;
   white-space: nowrap;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .pec-progress-shell {
@@ -108,6 +118,7 @@ body.experiment-body {
   border-radius: 14px;
   background-color: var(--surface);
   box-shadow: 0 6px 30px rgba(16, 24, 40, 0.08) !important;
+  overflow: hidden;
 }
 
 .screen {
@@ -236,6 +247,62 @@ body.immersive-mode .pec-topbar {
   min-height: 320px;
 }
 
+@media (max-width: 991px) {
+  .pec-topbar {
+    align-items: flex-start;
+  }
+
+  .pec-meta {
+    font-size: 0.78rem;
+    gap: 10px;
+  }
+
+  .trial-canvas {
+    height: min(58vh, 460px);
+  }
+}
+
+@media (max-width: 767px) {
+  .app-shell {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+
+  .pec-topbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pec-brand {
+    gap: 10px;
+  }
+
+  .pec-title {
+    font-size: 1.2rem;
+  }
+
+  .pec-subtitle {
+    font-size: 0.86rem;
+  }
+
+  .pec-meta {
+    justify-content: flex-start;
+    font-size: 0.82rem;
+  }
+
+  .pec-progress-label {
+    font-size: 0.84rem;
+  }
+
+  .trial-canvas {
+    height: min(56vh, 420px);
+  }
+
+  .chart-wrap {
+    min-height: 260px;
+  }
+}
+
 @media (max-width: 576px) {
   .pec-topbar {
     flex-direction: column;
@@ -253,7 +320,20 @@ body.immersive-mode .pec-topbar {
   }
 
   .pec-meta {
-    font-size: 1.05rem;
+    font-size: 0.8rem;
+  }
+
+  .response-btn {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .rubin-demo {
+    padding: 10px;
+  }
+
+  .card-body {
+    padding: 1rem !important;
   }
 
   #fixation {
@@ -263,5 +343,17 @@ body.immersive-mode .pec-topbar {
   .stimulus,
   .mask {
     max-height: 46vh;
+  }
+}
+
+@media (max-width: 400px) {
+  .pec-logo {
+    width: 44px;
+    height: 44px;
+    font-size: 16px;
+  }
+
+  .pec-title {
+    font-size: 1.05rem;
   }
 }
