@@ -35,10 +35,10 @@
 \setlength{\parindent}{0pt}
 
 % Portada
-\title{\Large Evaluación de la inclinación visual mediante el método de estímulos constantes}
+\title{\Large Organización figura-fondo y significación estimular en una tarea perceptiva online}
 \author{Andrés Amaya Zamudio}
 \affiliation{UNED Centro Asociado de Móstoles}
-\course{Prueba de Evaluación Continua 1}
+\course{Prueba de Evaluación Continua 2}
 \professor{Psicología de la Percepción}
 \duedate{24 de Abril de 2026}
 
@@ -53,16 +53,13 @@
 % ============================================
 \section*{Resumen}
 \addcontentsline{toc}{section}{Resumen}
-Este estudio evaluó la sensibilidad perceptiva a la inclinación visual mediante el método de los estímulos constantes en formato online. Participaron tres personas (P1, P2 y P3), que completaron dos sesiones de 42 ensayos (84 ensayos por participante; 252 ensayos en total). En cada ensayo se presentó una estrella con inclinación entre 0º y 6º, seguida de una máscara visual, y se registró una respuesta dicotómica (\emph{sí/no}).
+Este estudio examinó si la significación de la forma modula la organización figura-fondo en una tarea perceptiva online. Participaron cinco personas adultas (\(N=5\)), con 48 ensayos por participante (240 observaciones en total), distribuidos en dos bloques intra-sujeto: orientación natural y orientación invertida. En cada ensayo, la respuesta dicotómica (BLANCO/NEGRO) se recodificó como elección de región de alta significación (AS) o baja significación (BS) según la clave oficial de estímulos.
 
-El análisis se planteó de forma descriptiva: frecuencias absolutas, porcentajes de respuestas afirmativas por inclinación e intervalos de confianza del 95\% sobre las medias grupales. Los resultados mostraron un patrón psicométrico monotónico: porcentajes bajos de respuestas \emph{sí} en 0º-2º y aumento pronunciado desde 3º, con efecto techo en 5º-6º. Los umbrales absolutos individuales, definidos como la inclinación con porcentaje más cercano al 50\%, fueron 2º (P1), 3º (P2) y 3º (P3), con promedio de 2.67º.
+Los análisis descriptivos mostraron predominio de elecciones AS en ambos bloques (natural: 68.33\%; invertido: 72.50\%). Los contrastes binomiales exactos indicaron que la proporción de AS fue significativamente superior al azar (50\%) en bloque natural, bloque invertido y análisis global (todos \(p < 0.0001\)). Sin embargo, la comparación entre bloques no fue significativa (\(z=-0.707\), \(p=0.4795\)); de forma convergente, tampoco se observó asociación bloque \(\times\) respuesta en \(\chi^2\) (\(\chi^2(1)=0.500\), \(p=0.4795\), \(\phi=0.046\)).
 
-En conjunto, los datos son compatibles con una concepción probabilística de la detección perceptiva y sitúan la zona de transición alrededor de 3º. Sin embargo, el alcance de las conclusiones es limitado por el tamaño muestral, el formato online y la estimación discreta del umbral.
+En conjunto, los resultados respaldan un sesgo robusto hacia regiones AS como figura, compatible con modelos interactivos de percepción. No obstante, en este diseño no se obtuvo evidencia de efecto de la orientación (natural vs invertida). Las conclusiones deben interpretarse con cautela por el tamaño muestral y las limitaciones de control propias del contexto online.
 
 % ============================================
-%\citet{green1966signal}   % Green y Swets (1966)
-%\citep{green1966signal}   % (Green y Swets, 1966)
-
 \section{Introducción}
 
 La organización figura-fondo constituye un problema nuclear en percepción visual, ya que delimita qué región de la escena se representa como figura (entidad estructurada, delimitada por contornos y perceptivamente situada en primer plano) y qué región se codifica como fondo \citep{rubin1915,peterson1994must,vecera1998interactive}. Esta asignación no es un epifenómeno descriptivo, sino una operación computacional temprana de la que dependen procesos posteriores de análisis formal, agrupamiento y reconocimiento de objetos.
@@ -111,109 +108,83 @@ Para cada participante y para cada bloque se calcularon frecuencias absolutas y 
 
 \section{Resultados}
 
-\subsection{Hojas de recogida de datos de cada participante}
+\subsection{Calidad y estructura de los datos}
 
-Las hojas de recogida de datos de cada participante se generaron automáticamente durante la tarea y se utilizaron para el análisis presentado en este informe. Los datos brutos pueden consultarse en el repositorio del proyecto \citep{amaya2026repo}. En los tres casos se registraron 84 ensayos completos, sin valores perdidos, y 12 observaciones por nivel de inclinación.
+Se analizaron 240 observaciones procedentes de cinco archivos CSV de datos brutos (5 participantes \(\times\) 48 ensayos). La revisión de integridad confirmó la ausencia de valores perdidos y el cumplimiento estricto de la estructura experimental prevista: 24 ensayos en bloque natural y 24 ensayos en bloque invertido por participante, con dos presentaciones de cada estímulo en su bloque correspondiente. 
 
-\subsection{Tabla de resultados}
+En términos individuales, se observó heterogeneidad interparticipante moderada en la proporción de respuestas AS (natural: 58.33\%--87.50\%; invertido: 54.17\%--83.33\%), sin un patrón sistemático de incremento o descenso asociado a la orientación en todos los casos.
 
-La Tabla~\ref{tab:resultados_estructura_anexo_apa} presenta los resultados individuales (\emph{fa} y \%) y el umbral absoluto de cada participante. Los umbrales fueron 2º (P1), 3º (P2) y 3º (P3), con un promedio de 2.67º.
+\subsection{Resultados descriptivos por bloque}
+
+Las frecuencias agregadas por bloque se presentan en la Tabla~\ref{tab:freq_as_bs}. En ambos bloques predominó la elección de la región de alta significación (AS) sobre la de baja significación (BS).
 
 \begin{table}[H]
 \centering
-\caption{Frecuencia absoluta (\emph{fa}), porcentaje de respuestas afirmativas y umbral absoluto por participante}
-\label{tab:resultados_estructura_anexo_apa}
-\begin{threeparttable}
-\renewcommand{\arraystretch}{1.15}
-\setlength{\tabcolsep}{4.2pt}
-
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lccccccccccccccc}
+\caption{Frecuencia de respuestas AS y BS por bloque}
+\label{tab:freq_as_bs}
+\begin{tabular}{lcc}
 \toprule
-\multirow{3}{*}{\textbf{Participante}} &
-\multicolumn{14}{c}{\textbf{Intensidad del estímulo (inclinación medida en grados)}} &
-\multirow{3}{*}{\textbf{Umbral absoluto}} \\
-\cmidrule(lr){2-15}
-& \multicolumn{2}{c}{\textbf{0º}}
-& \multicolumn{2}{c}{\textbf{+1º}}
-& \multicolumn{2}{c}{\textbf{+2º}}
-& \multicolumn{2}{c}{\textbf{+3º}}
-& \multicolumn{2}{c}{\textbf{+4º}}
-& \multicolumn{2}{c}{\textbf{+5º}}
-& \multicolumn{2}{c}{\textbf{+6º}} & \\
-\cmidrule(lr){2-15}
-& \textbf{fa} & \textbf{\%}
-& \textbf{fa} & \textbf{\%}
-& \textbf{fa} & \textbf{\%}
-& \textbf{fa} & \textbf{\%}
-& \textbf{fa} & \textbf{\%}
-& \textbf{fa} & \textbf{\%}
-& \textbf{fa} & \textbf{\%}
-& \\
+\textbf{Bloque} & \textbf{AS} & \textbf{BS} \\
 \midrule
-P1 & 0 & 0,00 & 0 & 0,00 & 2 & 16,67 & 11 & 91,67 & 12 & 100,00 & 12 & 100,00 & 12 & 100,00 & 2º \\
-P2 & 1 & 8,33 & 0 & 0,00 & 0 & 0,00 & 5 & 41,67 & 11 & 91,67 & 12 & 100,00 & 12 & 100,00 & 3º \\
-P3 & 0 & 0,00 & 3 & 25,00 & 1 & 8,33 & 7 & 58,33 & 11 & 91,67 & 12 & 100,00 & 12 & 100,00 & 3º \\
+Natural   & 82 & 38 \\
+Invertido & 87 & 33 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+La Tabla~\ref{tab:pct_as_bs} muestra la distribución porcentual: el bloque natural registró 68.33\% de respuestas AS y el bloque invertido 72.50\%. La diferencia descriptiva entre bloques fue de 4.17 puntos porcentuales a favor del bloque invertido.
+
+\begin{table}[H]
+\centering
+\caption{Porcentaje de respuestas AS y BS por bloque}
+\label{tab:pct_as_bs}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Bloque} & \textbf{\% AS} & \textbf{\% BS} \\
 \midrule
-\textbf{Promedio (\%)} & \multicolumn{2}{c}{\textbf{2,78}} & \multicolumn{2}{c}{\textbf{8,33}} &
-\multicolumn{2}{c}{\textbf{8,33}} & \multicolumn{2}{c}{\textbf{63,89}} &
-\multicolumn{2}{c}{\textbf{94,45}} & \multicolumn{2}{c}{\textbf{100,00}} &
-\multicolumn{2}{c}{\textbf{100,00}} & \textbf{2,67º} \\
+Natural   & 68.33\% & 31.67\% \\
+Invertido & 72.50\% & 27.50\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Resultados inferenciales}
+
+La Tabla~\ref{tab:inferencial} sintetiza los contrastes preespecificados. Tanto en bloque natural como invertido, la proporción de elecciones AS fue significativamente superior al nivel esperado por azar (50\%), resultado que también se mantuvo en el análisis global (\(N=240\)). Los intervalos de confianza del 95\% se calcularon mediante el método de Wilson \citep{wilson1927probable}.
+
+No obstante, la comparación directa entre bloques no mostró diferencias estadísticamente significativas en la proporción de respuestas AS (\(z=-0.707\), \(p=0.4795\)). De forma convergente, el contraste de independencia bloque \(\times\) respuesta (AS/BS) tampoco alcanzó significación (\(\chi^2(1)=0.500\), \(p=0.4795\)). El tamaño de efecto asociado fue muy pequeño (\(\phi=0.046\)), compatible con una asociación despreciable en términos prácticos \citep{cohen1988power}.
+
+\begin{table}[H]
+\centering
+\caption{Estadística inferencial: contraste frente al azar y comparación entre bloques}
+\label{tab:inferencial}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lclcc}
+\toprule
+\textbf{Prueba} & \textbf{N} & \textbf{Estadístico / IC95\%} & \textbf{p-valor} & \textbf{Conclusión (\(\alpha=0.05\))} \\
+\midrule
+Natural vs azar (AS=50\%) & 120 & AS=82 (68.33\%), IC95\% [59.55\%, 75.98\%] & < 0.0001 & Significativo \\
+Invertido vs azar (AS=50\%) & 120 & AS=87 (72.50\%), IC95\% [63.91\%, 79.70\%] & < 0.0001 & Significativo \\
+Global vs azar (AS=50\%) & 240 & AS=169 (70.42\%), IC95\% [64.36\%, 75.83\%] & < 0.0001 & Significativo \\
+Natural vs Invertido (proporciones AS) & 240 & Dif=-4.17 pp, z=-0.707 & 0.4795 & No significativo \\
+Asociación bloque-respuesta & 240 & \(\chi^2(1)=0.500\), \(\phi=0.046\) & 0.4795 & No significativo \\
 \bottomrule
 \end{tabular}%
 }
-
-\begin{tablenotes}
-\footnotesize
-\item \textit{Nota}. \emph{fa} = frecuencia absoluta de respuestas afirmativas sobre 12 ensayos por inclinación.
-\end{tablenotes}
-\end{threeparttable}
 \end{table}
-
-\subsection{Representaciones gráficas}
-
-Las representaciones gráficas individuales (Figuras~\ref{fig:curva_p1}, \ref{fig:curva_p2} y \ref{fig:curva_p3}) muestran un patrón psicométrico coherente: baja tasa de respuestas afirmativas en inclinaciones pequeñas y aumento pronunciado a partir de 3º--4º.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\linewidth]{results/grafica_1_alonso(1).png}
-\caption{\textit{Curva psicométrica de P1.}}
-\label{fig:curva_p1}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\linewidth]{results/grafica_2_isabel(1).png}
-\caption{\textit{Curva psicométrica de P2.}}
-\label{fig:curva_p2}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\linewidth]{results/grafica_3_sergio(1).png}
-\caption{\textit{Curva psicométrica de P3.}}
-\label{fig:curva_p3}
-\end{figure}
-
-\subsection{Intervalos de confianza descriptivos}
-
-En términos descriptivos, el porcentaje medio de respuestas \emph{``sí''} aumentó conforme creció la inclinación del estímulo: 2.78\% en 0º, 8.33\% en 1º, 8.33\% en 2º, 63.89\% en 3º, 94.45\% en 4º y 100\% en 5º y 6º. Los intervalos de confianza del 95\% (aproximación normal entre participantes, \(N=3\)) fueron: 0º [−2.67, 8.22], 1º [−8.00, 24.67], 2º [−1.10, 17.77], 3º [35.08, 92.70], 4º [89.00, 99.89], 5º [100, 100] y 6º [100, 100]. Como en otros análisis con aproximación normal sobre porcentajes, algunos límites inferiores quedaron fuera del rango [0, 100].
-
-La amplitud de los intervalos en 1º-3º refleja una incertidumbre relevante en la zona de transición, mientras que el estrechamiento en 4º-6º indica una convergencia hacia el techo de rendimiento.
 
 % ---------------------------------------------
 \section{Discusión y conclusiones}
 
-Los resultados son coherentes con el marco teórico de la introducción: la detección de inclinación no se comporta como un fenómeno todo-o-nada, sino como una transición probabilística conforme aumenta la magnitud física del estímulo. El incremento de respuestas afirmativas desde valores muy bajos en 0º-2º hasta valores próximos al techo en 5º-6º es compatible con una función psicométrica creciente \citep{fechner1966elements,green1966signal}.
+Los resultados apoyan de forma clara la hipótesis principal de la práctica: en ambos bloques, la región de alta significación (AS) fue seleccionada como figura con una frecuencia significativamente superior a la esperada por azar (50\%). Este patrón se observó tanto en orientación natural como invertida y también en el análisis global, lo que indica que la familiaridad potencial de la forma sesga la organización figura-fondo de manera robusta.
 
-En términos de sensibilidad perceptiva, la zona crítica se sitúa alrededor de 3º. P1 mostró umbral en 2º, mientras que P2 y P3 lo hicieron en 3º, lo que sugiere diferencias individuales moderadas dentro de un patrón global común. Esta variabilidad puede reflejar diferencias en sensibilidad, en criterio de respuesta o en estabilidad atencional durante la tarea.
+En términos teóricos, este hallazgo es compatible con propuestas interactivas según las cuales la asignación figura-fondo no depende exclusivamente de claves locales de contorno, sino que puede verse modulada tempranamente por representaciones de objeto y memoria visual \citep{peterson1994must,peterson1994object,vecera1998interactive}. En consecuencia, los datos obtenidos se alinean mejor con modelos de integración bottom-up/top-down que con una secuencia estrictamente serial.
 
-La evolución por grados confirma que, a mayor inclinación, mayor probabilidad de detección. En 0º-2º predominan respuestas negativas; en 3º aparece la transición; y en 4º-6º se alcanza un rendimiento muy alto. Los intervalos de confianza apoyan esta lectura, aunque su amplitud en la zona intermedia indica incertidumbre relevante donde se localiza el umbral.
+La comparación entre bloques (natural vs invertido) no mostró diferencias estadísticamente significativas, y el tamaño de efecto fue muy pequeño (\(\phi=0.046\)) \citep{cohen1988power}. Este resultado sugiere que, bajo las condiciones concretas de la tarea (tiempo de presentación, número de ensayos y conjunto estimular), la inversión de la orientación no modificó de forma apreciable la probabilidad de elegir AS. Aunque desde la literatura de reconocimiento de objetos cabría esperar cierto coste por inversión \citep{tarr1989mental}, en este estudio dicho efecto no emergió con magnitud detectable.
 
-Las limitaciones del procedimiento deben considerarse explícitamente. Primero, el tamaño muestral reducido limita la generalización. Segundo, aunque la tarea se implementó en una web programada específicamente para esta práctica, el contexto online no garantiza un control idéntico de todas las condiciones de presentación y visionado (dispositivo, distancia, brillo, posibles distracciones). Tercero, el número de niveles y repeticiones, aunque suficiente para observar tendencia, restringe la precisión fina de la estimación del umbral.
+Las principales limitaciones metodológicas son: (a) tamaño muestral reducido (\(N=5\)), que limita la precisión inferencial y la generalización; (b) administración online, con control incompleto de variables de presentación (pantalla, brillo, distancia de visionado, posibles distractores); y (c) análisis agregado por bloque, que no modela explícitamente la variabilidad específica de cada estímulo y de cada participante.
 
-Como conclusión, los datos respaldan que la detección de la inclinación aumenta de forma progresiva con el grado del estímulo y sitúan el umbral absoluto del grupo alrededor de 3º. Este resultado es coherente con el enfoque psicofísico de estímulos constantes y con la idea de que la percepción opera de forma probabilística, no dicotómica. Para mejorar la robustez de futuras aplicaciones, se recomienda ampliar la muestra, aumentar la densidad de niveles en la zona de transición (2º-4º), estandarizar con mayor detalle las condiciones de aplicación online (distancia orientativa, brillo y control de distracciones) y complementar el análisis descriptivo con ajustes formales de función psicométrica y estimaciones de intervalo específicas para proporciones 
-\citep{wichmann2001psychometric}.
+En conjunto, la evidencia obtenida respalda la existencia de un sesgo figura-fondo hacia regiones AS y, al mismo tiempo, no aporta soporte para una diferencia entre orientación natural e invertida en este diseño. Como líneas de mejora, se recomienda ampliar la muestra, incrementar el número de ensayos por condición y aplicar modelos multinivel (por ejemplo, regresión logística con efectos aleatorios por participante y estímulo) para estimar con mayor precisión la contribución relativa de la significación estimular y de la orientación.
 
 % ---------------------------------------------
 
