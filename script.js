@@ -14,6 +14,7 @@
   const MASK_MIN_MS = 500;
   const MASK_MAX_MS = 1000;
   const BREAK_DURATION_SECONDS = 120;
+  const ALPHA = 0.05;
 
   const CONFIG = {
     // Valores validos en URL: ?block1=natural o ?block1=invertido
@@ -97,6 +98,7 @@
     responseButtons: document.querySelectorAll(".response-btn"),
     freqTableBody: document.querySelector("#table-frequency tbody"),
     pctTableBody: document.querySelector("#table-percentage tbody"),
+    statsTableBody: document.querySelector("#table-stats tbody"),
     chartCanvas: document.getElementById("results-chart")
     ,
     headerProgress: document.getElementById("pec-progress"),
@@ -569,6 +571,267 @@
     return [result.natural, result.invertido];
   }
 
+  function getBlockCounts(summaryRows, block) {
+    const row = summaryRows.find((item) => item.bloque === block);
+    const asCount = Number(row?.asCount || 0);
+    const bsCount = Number(row?.bsCount || 0);
+    const total = asCount + bsCount;
+    return { asCount, bsCount, total };
+  }
+
+  function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+  }
+
+  function normalCdf(x) {
+    const t = 1 / (1 + 0.2316419 * Math.abs(x));
+    const d = 0.3989423 * Math.exp((-x * x) / 2);
+    const poly =
+      0.3193815 * t +
+      -0.3565638 * t * t +
+      1.781478 * t * t * t +
+      -1.821256 * t * t * t * t +
+      1.330274 * t * t * t * t * t;
+    const approx = 1 - d * poly;
+    return x >= 0 ? approx : 1 - approx;
+  }
+
+  function twoSidedPFromZ(z) {
+    const p = 2 * (1 - normalCdf(Math.abs(z)));
+    return clamp(p, 0, 1);
+  }
+
+  function wilsonInterval(k, n, z = 1.959963984540054) {
+    if (!n || n <= 0) {
+      return { lower: 0, upper: 0 };
+    }
+
+    const p = k / n;
+    const z2 = z * z;
+    const denom = 1 + z2 / n;
+    const center = (p + z2 / (2 * n)) / denom;
+    const margin =
+      (z / denom) * Math.sqrt((p * (1 - p)) / n + z2 / (4 * n * n));
+
+    return {
+      lower: clamp(center - margin, 0, 1),
+      upper: clamp(center + margin, 0, 1)
+    };
+  }
+
+  function buildLogFactorials(maxN) {
+    const logs = new Array(maxN + 1).fill(0);
+    for (let i = 2; i <= maxN; i += 1) {
+      logs[i] = logs[i - 1] + Math.log(i);
+    }
+    return logs;
+  }
+
+  function binomialTwoSidedPValue(k, n) {
+    if (!n || n <= 0) return 1;
+
+    const logFacts = buildLogFactorials(n);
+    const ln2 = Math.log(2);
+
+    function logP(x) {
+      return logFacts[n] - logFacts[x] - logFacts[n - x] - n * ln2;
+    }
+
+    const logPObs = logP(k);
+    let p = 0;
+
+    for (let x = 0; x <= n; x += 1) {
+      const current = logP(x);
+      if (current <= logPObs + 1e-12) {
+        p += Math.exp(current);
+      }
+    }
+
+    return clamp(p, 0, 1);
+  }
+
+  function chiSquarePValueDf1(chiSquare) {
+    if (!Number.isFinite(chiSquare) || chiSquare < 0) {
+      return 1;
+    }
+
+    const z = Math.sqrt(chiSquare);
+    const p = 2 * (1 - normalCdf(z));
+    return clamp(p, 0, 1);
+  }
+
+  function formatPValue(p) {
+    if (!Number.isFinite(p)) return "-";
+    if (p < 0.0001) return "< 0.0001";
+    return p.toFixed(4);
+  }
+
+  function significanceText(p, alpha = ALPHA) {
+    if (!Number.isFinite(p)) return "No disponible";
+    return p < alpha ? "Significativo" : "No significativo";
+  }
+
+  function computeInferentialStats(summaryRows) {
+    const natural = getBlockCounts(summaryRows, "natural");
+    const invertido = getBlockCounts(summaryRows, "invertido");
+
+    const nNat = natural.total;
+    const nInv = invertido.total;
+    const kNat = natural.asCount;
+    const kInv = invertido.asCount;
+    const pNat = nNat > 0 ? kNat / nNat : 0;
+    const pInv = nInv > 0 ? kInv / nInv : 0;
+
+    const natCi = wilsonInterval(kNat, nNat);
+    const invCi = wilsonInterval(kInv, nInv);
+
+    const globalN = nNat + nInv;
+    const globalK = kNat + kInv;
+    const globalP = globalN > 0 ? globalK / globalN : 0;
+    const globalCi = wilsonInterval(globalK, globalN);
+
+    const pooled = globalN > 0 ? globalK / globalN : 0;
+    const diff = pNat - pInv;
+
+    let zDiff = NaN;
+    let pDiff = NaN;
+    if (nNat > 0 && nInv > 0) {
+      const seDiff = Math.sqrt(pooled * (1 - pooled) * (1 / nNat + 1 / nInv));
+      if (seDiff > 0) {
+        zDiff = diff / seDiff;
+        pDiff = twoSidedPFromZ(zDiff);
+      }
+    }
+
+    const total = globalN;
+    const rowTotalNat = nNat;
+    const rowTotalInv = nInv;
+    const colTotalAs = globalK;
+    const colTotalBs = total - globalK;
+
+    let chiSquare = NaN;
+    let pChiSquare = NaN;
+    let phi = NaN;
+
+    if (total > 0) {
+      const eNatAs = (rowTotalNat * colTotalAs) / total;
+      const eNatBs = (rowTotalNat * colTotalBs) / total;
+      const eInvAs = (rowTotalInv * colTotalAs) / total;
+      const eInvBs = (rowTotalInv * colTotalBs) / total;
+
+      const validExpected = [eNatAs, eNatBs, eInvAs, eInvBs].every((v) => v > 0);
+      if (validExpected) {
+        chiSquare =
+          ((kNat - eNatAs) ** 2) / eNatAs +
+          ((natural.bsCount - eNatBs) ** 2) / eNatBs +
+          ((kInv - eInvAs) ** 2) / eInvAs +
+          ((invertido.bsCount - eInvBs) ** 2) / eInvBs;
+        pChiSquare = chiSquarePValueDf1(chiSquare);
+        phi = Math.sqrt(chiSquare / total);
+      }
+    }
+
+    return {
+      natural: {
+        n: nNat,
+        asCount: kNat,
+        pAs: pNat,
+        pValueBinomial: binomialTwoSidedPValue(kNat, nNat),
+        ci: natCi
+      },
+      invertido: {
+        n: nInv,
+        asCount: kInv,
+        pAs: pInv,
+        pValueBinomial: binomialTwoSidedPValue(kInv, nInv),
+        ci: invCi
+      },
+      global: {
+        n: globalN,
+        asCount: globalK,
+        pAs: globalP,
+        pValueBinomial: binomialTwoSidedPValue(globalK, globalN),
+        ci: globalCi
+      },
+      comparison: {
+        difference: diff,
+        z: zDiff,
+        pValue: pDiff,
+        chiSquare,
+        pChiSquare,
+        phi
+      }
+    };
+  }
+
+  function renderStatsTable(summaryRows) {
+    if (!ui.statsTableBody) {
+      return;
+    }
+
+    const stats = computeInferentialStats(summaryRows);
+    const rows = [
+      {
+        prueba: "Natural vs azar (AS=50%)",
+        n: stats.natural.n,
+        estadistico: `AS=${stats.natural.asCount} (${(stats.natural.pAs * 100).toFixed(2)}%), IC95% [${
+          (stats.natural.ci.lower * 100).toFixed(2)
+        }%, ${(stats.natural.ci.upper * 100).toFixed(2)}%]`,
+        p: stats.natural.pValueBinomial,
+        decision: significanceText(stats.natural.pValueBinomial)
+      },
+      {
+        prueba: "Invertido vs azar (AS=50%)",
+        n: stats.invertido.n,
+        estadistico: `AS=${stats.invertido.asCount} (${(stats.invertido.pAs * 100).toFixed(2)}%), IC95% [${
+          (stats.invertido.ci.lower * 100).toFixed(2)
+        }%, ${(stats.invertido.ci.upper * 100).toFixed(2)}%]`,
+        p: stats.invertido.pValueBinomial,
+        decision: significanceText(stats.invertido.pValueBinomial)
+      },
+      {
+        prueba: "Global vs azar (AS=50%)",
+        n: stats.global.n,
+        estadistico: `AS=${stats.global.asCount} (${(stats.global.pAs * 100).toFixed(2)}%), IC95% [${
+          (stats.global.ci.lower * 100).toFixed(2)
+        }%, ${(stats.global.ci.upper * 100).toFixed(2)}%]`,
+        p: stats.global.pValueBinomial,
+        decision: significanceText(stats.global.pValueBinomial)
+      },
+      {
+        prueba: "Natural vs Invertido (proporciones AS)",
+        n: stats.global.n,
+        estadistico: Number.isFinite(stats.comparison.z)
+          ? `Dif=${(stats.comparison.difference * 100).toFixed(2)} pp, z=${stats.comparison.z.toFixed(3)}`
+          : "No disponible",
+        p: stats.comparison.pValue,
+        decision: significanceText(stats.comparison.pValue)
+      },
+      {
+        prueba: "Asociacion bloque-respuesta",
+        n: stats.global.n,
+        estadistico: Number.isFinite(stats.comparison.chiSquare)
+          ? `chi2(1)=${stats.comparison.chiSquare.toFixed(3)}, phi=${stats.comparison.phi.toFixed(3)}`
+          : "No disponible",
+        p: stats.comparison.pChiSquare,
+        decision: significanceText(stats.comparison.pChiSquare)
+      }
+    ];
+
+    ui.statsTableBody.innerHTML = "";
+    rows.forEach((row) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${row.prueba}</td>
+        <td>${row.n}</td>
+        <td>${row.estadistico}</td>
+        <td>${formatPValue(row.p)}</td>
+        <td>${row.decision}</td>
+      `;
+      ui.statsTableBody.appendChild(tr);
+    });
+  }
+
   function renderResultsTables(summaryRows) {
     ui.freqTableBody.innerHTML = "";
     ui.pctTableBody.innerHTML = "";
@@ -590,6 +853,8 @@
       `;
       ui.pctTableBody.appendChild(pctTr);
     });
+
+    renderStatsTable(summaryRows);
   }
 
   function renderResultsChart(summaryRows) {
