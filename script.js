@@ -171,37 +171,22 @@
   }
 
   function getStimulusPath(imageCode) {
-    // Se intenta con varias extensiones para facilitar uso directo en GitHub Pages.
-    const base = `assets/stimuli/${imageCode}`;
-    const extensions = ["png", "jpg", "jpeg", "webp"];
-
-    return new Promise((resolve) => {
-      let index = 0;
-
-      function tryNext() {
-        if (index >= extensions.length) {
-          resolve(`${base}.png`);
-          return;
-        }
-        const path = `${base}.${extensions[index]}`;
-        const img = new Image();
-        img.onload = () => resolve(path);
-        img.onerror = () => {
-          index += 1;
-          tryNext();
-        };
-        img.src = path;
-      }
-
-      tryNext();
-    });
+    // En este proyecto los estimulos se distribuyen como PNG.
+    return `assets/stimuli/${imageCode}.png`;
   }
 
-  function loadImage(path) {
+  function loadImage(path, timeoutMs = 2500) {
     return new Promise((resolve, reject) => {
       const img = new Image();
-      img.onload = () => resolve(img);
-      img.onerror = reject;
+      const timer = setTimeout(() => reject(new Error("timeout")), timeoutMs);
+      img.onload = () => {
+        clearTimeout(timer);
+        resolve(img);
+      };
+      img.onerror = (err) => {
+        clearTimeout(timer);
+        reject(err);
+      };
       img.src = path;
     });
   }
@@ -328,7 +313,7 @@
       return processedStimulusCache.get(imageCode);
     }
 
-    const path = await getStimulusPath(imageCode);
+    const path = getStimulusPath(imageCode);
     try {
       const img = await loadImage(path);
       const processedSrc = createCleanBinaryStimulus(img);
