@@ -1,26 +1,35 @@
 :root {
-  --bg: #f6f8fb;
+  --bg: #f5f7fb;
+  --bg-top: #eef4ff;
+  --bg-bottom: #f7f9fc;
   --surface: #ffffff;
-  --border: #e3e8ef;
-  --text: #1f2a37;
+  --border: rgba(23, 101, 217, 0.12);
+  --text: #111827;
   --muted: #5b6775;
-  --primary: #2f6fed;
+  --primary: #1765d9;
+  --primary-2: #7fb3ff;
 }
 
-body {
-  background: radial-gradient(circle at top left, #ffffff 0%, var(--bg) 55%);
+* {
+  box-sizing: border-box;
+}
+
+body.experiment-body {
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg) 40%, var(--bg-bottom) 100%);
   color: var(--text);
   min-height: 100vh;
 }
 
 .app-shell {
-  max-width: 900px;
+  max-width: 940px;
 }
 
 .lab-card {
   border: 1px solid var(--border);
   border-radius: 14px;
   background-color: var(--surface);
+  box-shadow: 0 6px 30px rgba(16, 24, 40, 0.08) !important;
 }
 
 .screen {
@@ -37,15 +46,28 @@ body {
   color: var(--text);
 }
 
+.form-control,
+.form-select {
+  border-color: rgba(23, 101, 217, 0.16);
+  background-color: #fbfdff;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: rgba(23, 101, 217, 0.4);
+  box-shadow: 0 0 0 0.2rem rgba(23, 101, 217, 0.12);
+}
+
 .rubin-demo {
-  border: 1px solid var(--border);
+  border: 1px solid rgba(23, 101, 217, 0.1);
   border-radius: 10px;
   padding: 12px;
-  background: #fbfcfe;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  box-shadow: 0 6px 18px rgba(16, 24, 40, 0.05);
 }
 
 .rubin-demo__title {
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 8px;
 }
 
@@ -84,6 +106,8 @@ body {
   object-fit: contain;
   border: 1px solid #dbe2ea;
   background: #ffffff;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
 }
 
 .mask {
@@ -101,6 +125,25 @@ body {
 
 .response-btn {
   min-width: 170px;
+}
+
+.btn-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  box-shadow: 0 6px 18px rgba(23, 101, 217, 0.16);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background: #0f57c3;
+  border-color: #0f57c3;
+}
+
+.btn-outline-secondary,
+.btn-outline-primary,
+.btn-outline-dark,
+.btn-light.border {
+  border-color: rgba(23, 101, 217, 0.2);
 }
 
 .chart-wrap {

@@ -12,7 +12,7 @@
     />
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
+  <body class="experiment-body">
     <main class="app-shell container py-4 py-md-5">
       <section id="screen-welcome" class="screen active">
         <div class="card lab-card shadow-sm">
@@ -37,11 +37,25 @@
             <h2 class="h4 mb-3 text-center">Instrucciones</h2>
             <div class="rubin-demo mb-4">
               <div class="rubin-demo__title">Demo: Copa de Rubin</div>
-              <svg viewBox="0 0 300 170" aria-label="Demo copa de Rubin" role="img" class="rubin-svg">
-                <rect x="0" y="0" width="300" height="170" fill="#111111"></rect>
+              <svg viewBox="0 0 320 190" aria-label="Demo copa de Rubin" role="img" class="rubin-svg">
+                <rect x="0" y="0" width="320" height="190" fill="#101010"></rect>
                 <path
-                  d="M95 0 C120 10, 115 35, 105 55 C98 70, 105 82, 118 86 C105 90, 98 102, 105 117 C115 137, 120 160, 95 170 L205 170 C180 160, 185 137, 195 117 C202 102, 195 90, 182 86 C195 82, 202 70, 195 55 C185 35, 180 10, 205 0 Z"
+                  d="M110 0 C132 14,128 30,122 48 C117 63,118 76,134 86 C118 96,117 110,122 126 C128 146,132 170,110 190 L210 190 C188 170,192 146,198 126 C203 110,202 96,186 86 C202 76,203 63,198 48 C192 30,188 14,210 0 Z"
                   fill="#ffffff"
+                ></path>
+                <path
+                  d="M109 0 C93 8,86 24,86 38 C86 51,94 59,104 66 C98 73,98 83,104 90 C95 98,90 112,92 123 C95 149,106 177,109 190"
+                  fill="none"
+                  stroke="#ffffff"
+                  stroke-width="1.5"
+                  opacity="0.55"
+                ></path>
+                <path
+                  d="M211 0 C227 8,234 24,234 38 C234 51,226 59,216 66 C222 73,222 83,216 90 C225 98,230 112,228 123 C225 149,214 177,211 190"
+                  fill="none"
+                  stroke="#ffffff"
+                  stroke-width="1.5"
+                  opacity="0.55"
                 ></path>
               </svg>
               <p class="small text-secondary mb-0">
@@ -156,6 +170,7 @@
             <p class="text-secondary mb-4">
               Gracias por participar. Por favor, avisa al experimentador para cerrar la sesión.
             </p>
+            <p id="participant-session-meta" class="small text-secondary mb-4"></p>
             <div class="d-flex justify-content-center gap-2 flex-wrap">
               <button id="btn-participant-finish" class="btn btn-primary px-4">
                 Finalizar
@@ -169,6 +184,7 @@
         <div class="card lab-card shadow-sm mb-3">
           <div class="card-body p-4">
             <h2 class="h4 text-center mb-4">Panel de resultados (investigador)</h2>
+            <p id="analysis-participant-meta" class="small text-secondary mb-3"></p>
             <div class="row g-3 align-items-end">
               <div class="col-md-5">
                 <label for="input-raw-csv" class="form-label">Cargar CSV datos brutos</label>
